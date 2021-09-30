@@ -25,7 +25,7 @@ void draw() {
   int sizeOfText = 32;
   textSize(sizeOfText);
   textAlign(LEFT, LEFT);
-  text(myConsole, sizeOfText, sizeOfText);
+  text(myConsole, sizeOfTex t, sizeOfText);
 }
 
 void mousePressed() {
