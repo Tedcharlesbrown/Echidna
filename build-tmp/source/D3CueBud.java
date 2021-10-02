@@ -4,7 +4,6 @@ import processing.event.*;
 import processing.opengl.*; 
 
 import themidibus.*; 
-import websockets.*; 
 import netP5.*; 
 import oscP5.*; 
 
@@ -23,7 +22,6 @@ public class D3CueBud extends PApplet {
 
 
 
-
 OscP5 oscP5;
 NetAddress myRemoteLocation;
 
@@ -31,9 +29,6 @@ MidiBus myBus; // The MidiBus
 
 String myConsole = "";
 int myConsoleLength = 0;
-
-String oldCue = "old";
-String newCue = "new";
 
 public void setup() {
   MidiBus.list();
@@ -74,23 +69,6 @@ public void printScreen(String text) {
   myConsole += text + "\n";
   myConsoleLength++;
 }
-public void parseD3Cue(String text) {
-  newCue = text;
-  if (!newCue.equals(oldCue)) {
-    oldCue = newCue;
-    printScreen(newCue);
-  }
-
-}
-/* incoming osc message are forwarded to the oscEvent method. */
-public void oscEvent(OscMessage theOscMessage) {
-  if (theOscMessage.checkTypetag("s")) {
-    oscStringParse(theOscMessage.addrPattern(), theOscMessage.get(0).stringValue());
-  } else if (theOscMessage.checkTypetag("f")) {
-    oscFloatParse(theOscMessage.addrPattern(), theOscMessage.get(0).floatValue());
-  }
-}
-
 String d3Address = "/d3/showcontrol/";
 
 String d3HeartAddress = d3Address + "heartbeat";
@@ -108,6 +86,56 @@ String d3ModeAddress = d3Address + "playmode";
 String d3Position, d3Name, d3ID, d3CurrentCue, d3NextCue, d3Hint, d3Mode;
 float d3Heart, d3Volume, d3Brightness, d3BPM;
 
+public void d3StringParse(String address, String value) {
+  if (address.indexOf(d3PositionAddress) != -1) {
+    d3Position = value;
+    // println(value);
+  } else if (address.indexOf(d3NameAddress) != -1) {
+    d3Name = value;
+    // println(value);
+  } else if (address.indexOf(d3IDAddress) != -1) {
+    d3ID = value;
+    // println(value);
+  } else if (address.indexOf(d3CurrentCueAddress) != -1) {
+    d3CurrentCue = value;
+    // println(value);
+  } else if (address.indexOf(d3NextCueAddress) != -1) {
+    d3NextCue = value;
+    // println(value);
+  } else if (address.indexOf(d3HintAddress) != -1) {
+    d3Hint = value;
+    // println(value);
+  } else if (address.indexOf(d3ModeAddress) != -1) {
+    d3Mode = value;
+    // println(value);
+  }
+}
+
+public void d3FloatParse(String address, float value) {
+  if (address.indexOf(d3HeartAddress) != -1) {
+    d3Heart = value;
+    // println(value);
+  } else if (address.indexOf(d3VolumeAddress) != -1) {
+    d3Volume = value;
+    // println(value);
+  } else if (address.indexOf(d3BrightnessAddress) != -1) {
+    d3Brightness = value;
+    // println(value);
+  } else if (address.indexOf(d3BPMAddress) != -1) {
+    d3BPM = value;
+    // println(value);
+  }
+}
+
+/* incoming osc message are forwarded to the oscEvent method. */
+public void oscEvent(OscMessage theOscMessage) {
+  if (theOscMessage.checkTypetag("s")) {
+    oscStringParse(theOscMessage.addrPattern(), theOscMessage.get(0).stringValue());
+  } else if (theOscMessage.checkTypetag("f")) {
+    oscFloatParse(theOscMessage.addrPattern(), theOscMessage.get(0).floatValue());
+  }
+}
+
 public void oscStringParse(String address, String value) {
   if (address.indexOf(d3Address) != -1) {
     d3StringParse(address, value);
@@ -120,35 +148,6 @@ public void oscFloatParse(String address, float value) {
   }
 }
 
-public void d3StringParse(String address, String value) {
-  if (address.indexOf(d3PositionAddress) != -1) {
-    // println(value);
-  } else if (address.indexOf(d3NameAddress) != -1) {
-    // println(value);
-  } else if (address.indexOf(d3IDAddress) != -1) {
-    // println(value);
-  } else if (address.indexOf(d3CurrentCueAddress) != -1) {
-    // println(value);
-  } else if (address.indexOf(d3NextCueAddress) != -1) {
-    // println(value);
-  } else if (address.indexOf(d3HintAddress) != -1) {
-    // println(value);
-  } else if (address.indexOf(d3ModeAddress) != -1) {
-    // println(value);
-  }
-}
-
-public void d3FloatParse(String address, float value) {
-  if (address.indexOf(d3HeartAddress) != -1) {
-    println(value);
-  } else if (address.indexOf(d3VolumeAddress) != -1) {
-    println(value);
-  } else if (address.indexOf(d3BrightnessAddress) != -1) {
-    println(value);
-  } else if (address.indexOf(d3BPMAddress) != -1) {
-    println(value);
-  }
-}
   public void settings() {  size(400, 400); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "D3CueBud" };
