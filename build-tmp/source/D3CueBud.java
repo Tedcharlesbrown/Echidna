@@ -3,10 +3,13 @@ import processing.data.*;
 import processing.event.*; 
 import processing.opengl.*; 
 
-import themidibus.*; 
 import netP5.*; 
 import oscP5.*; 
 import http.*; 
+import themidibus.*; 
+import javax.sound.midi.MidiMessage; 
+import javax.sound.midi.SysexMessage; 
+import javax.sound.midi.ShortMessage; 
 
 import java.util.HashMap; 
 import java.util.ArrayList; 
@@ -23,19 +26,14 @@ public class D3CueBud extends PApplet {
 
 
 
-
-
 OscP5 oscP5;
 NetAddress myRemoteLocation;
 
-
-MidiBus myBus; // The MidiBus
-
 String myConsole = "";
-  int myConsoleLength = 0;
+int myConsoleLength = 0;
 
   public void setup() {
-    MidiBus.list();
+  MidiBus.list();
   
   oscP5 = new OscP5(this, 7400);
   myRemoteLocation = new NetAddress("10.71.10.160", 3333);
@@ -130,13 +128,15 @@ public void d3FloatParse(String address, float value) {
     // println(value);
   }
 }
+
+
 SimpleHTTPServer server;
 PrintWriter output;
 
 String[] serverText;
 
 public void serverSetup() {
-	output = createWriter("data/index.html");
+  output = createWriter("data/index.html");
   server = new SimpleHTTPServer(this); 
 
   output.println("<!DOCTYPE html>");
@@ -155,6 +155,31 @@ public void serverSetup() {
   serverText = loadStrings("index.html");
   printArray(serverText);
 }
+
+public void serverDraw() {
+      output = createWriter("data/index.html");
+
+  for (int i = 0; i < serverText.length; i++) {
+    if (i == 5) {
+      output.print("<h1>");
+      output.print(hour() + ":" + minute() + "." + second());
+      output.println("</h1>");
+    } else if (i == 6) {
+      output.print("<h1>LX Cue Number: ");
+      output.print(millis());
+      output.println("</h1>");
+    } else {
+      //output.println(serverText[i]);
+    }
+  }
+  output.flush();
+}
+
+ //Import the MidiMessage classes http://java.sun.com/j2se/1.5.0/docs/api/javax/sound/midi/MidiMessage.html
+
+
+
+MidiBus myBus; // The MidiBus
 /* incoming osc message are forwarded to the oscEvent method. */
 public void oscEvent(OscMessage theOscMessage) {
   if (theOscMessage.checkTypetag("s")) {

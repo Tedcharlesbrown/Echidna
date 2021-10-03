@@ -5,17 +5,10 @@ import javax.sound.midi.ShortMessage;
 
 MidiBus myBus; // The MidiBus
 
-void setup() {
-  size(400, 400);
-  background(0);
-
-  //MidiBus.list();
-
-  myBus = new MidiBus(this, 0, -1);
+void setupMIDI() {
+	MidiBus.list();
 }
 
-void draw() {
-}
 
 void midiMessage(MidiMessage message) { // You can also use midiMessage(MidiMessage message, long timestamp, String bus_name)
 

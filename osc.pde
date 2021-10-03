@@ -1,3 +1,15 @@
+import netP5.*;
+import oscP5.*;
+
+
+OscP5 oscP5;
+NetAddress myRemoteLocation;
+
+void setupOSC() {
+	oscP5 = new OscP5(this, 7400);
+	myRemoteLocation = new NetAddress("10.71.10.160", 3333);
+}
+
 /* incoming osc message are forwarded to the oscEvent method. */
 void oscEvent(OscMessage theOscMessage) {
   if (theOscMessage.checkTypetag("s")) {
@@ -18,4 +30,3 @@ void oscFloatParse(String address, float value) {
     d3FloatParse(address, value);
   }
 }
-
