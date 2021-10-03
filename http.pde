@@ -24,4 +24,21 @@ void serverSetup() {
   printArray(serverText);
 }
 
-void serverDraw() 
+void serverDraw() {
+      output = createWriter("data/index.html");
+
+  for (int i = 0; i < serverText.length; i++) {
+    if (i == 5) {
+      output.print("<h1>");
+      output.print(hour() + ":" + minute() + "." + second());
+      output.println("</h1>");
+    } else if (i == 6) {
+      output.print("<h1>LX Cue Number: ");
+      output.print(millis());
+      output.println("</h1>");
+    } else {
+      //output.println(serverText[i]);
+    }
+  }
+  output.flush();
+}
