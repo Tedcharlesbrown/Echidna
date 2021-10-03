@@ -6,6 +6,7 @@ import processing.opengl.*;
 import themidibus.*; 
 import netP5.*; 
 import oscP5.*; 
+import http.*; 
 
 import java.util.HashMap; 
 import java.util.ArrayList; 
@@ -22,16 +23,19 @@ public class D3CueBud extends PApplet {
 
 
 
+
+
 OscP5 oscP5;
 NetAddress myRemoteLocation;
+
 
 MidiBus myBus; // The MidiBus
 
 String myConsole = "";
-int myConsoleLength = 0;
+  int myConsoleLength = 0;
 
-public void setup() {
-  MidiBus.list();
+  public void setup() {
+    MidiBus.list();
   
   oscP5 = new OscP5(this, 7400);
   myRemoteLocation = new NetAddress("10.71.10.160", 3333);
@@ -126,7 +130,31 @@ public void d3FloatParse(String address, float value) {
     // println(value);
   }
 }
+SimpleHTTPServer server;
+PrintWriter output;
 
+String[] serverText;
+
+public void serverSetup() {
+	output = createWriter("data/index.html");
+  server = new SimpleHTTPServer(this); 
+
+  output.println("<!DOCTYPE html>");
+  output.println("<html>");
+  output.println("<head>");
+  output.println("<title>Page Title</title>");
+  output.println("<body>");
+
+  output.println("<h1>");
+  output.println("<h1>LX Cue Number: ");
+
+  output.println("</body>");
+  output.println("</html>");
+  output.flush();
+
+  serverText = loadStrings("index.html");
+  printArray(serverText);
+}
 /* incoming osc message are forwarded to the oscEvent method. */
 public void oscEvent(OscMessage theOscMessage) {
   if (theOscMessage.checkTypetag("s")) {

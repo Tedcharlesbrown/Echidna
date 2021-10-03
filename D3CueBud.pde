@@ -1,6 +1,8 @@
 import themidibus.*;
 import netP5.*;
 import oscP5.*;
+import http.*;
+
 
 OscP5 oscP5;
 NetAddress myRemoteLocation;
@@ -10,7 +12,7 @@ MidiBus myBus; // The MidiBus
 String myConsole = "";
 int myConsoleLength = 0;
 
-void setup() {
+  void setup() {
   MidiBus.list();
   size(400, 400);
   oscP5 = new OscP5(this, 7400);
