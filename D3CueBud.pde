@@ -20,12 +20,26 @@ void captureEvent(Capture video) {
   video.read();
 }
 
+String oldTrigger = "";
+int delay = 0;
+Boolean trigger = false;
+int videoDelay = 150;
+
 void draw() {
   background(0);
   serverDraw();
 
   image(video, 0, 0);
 
-  
-  saveFrame("data/webImage.png");
+
+  if (!oldTrigger.equals(d3CurrentCue)) {
+    delay = millis();
+      oldTrigger = d3CurrentCue;
+      trigger = true;
+  } else {
+    if (millis() > delay + videoDelay && trigger) {
+      saveFrame("data/webImage.png");
+      trigger = false;
+    }
+  }
 }

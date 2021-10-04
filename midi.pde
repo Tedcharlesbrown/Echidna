@@ -13,11 +13,12 @@ int indexStart, indexEnd;
 
 void setupMIDI() {
 	MidiBus.list();
+	myBus = new MidiBus(this,0,-1);
 }
 
 
 void midiMessage(MidiMessage message) {
-	if (message.getMessage().length >= 12) {
+	if (message.getMessage().length >= 10) {
 		parseSYSEX(message);
 	}
 }
@@ -26,20 +27,20 @@ void parseSYSEX(MidiMessage message) {
 	for (int i = 1; i < message.getMessage().length; i++) {
 		String m = hex(message.getMessage()[i]);
 		if (i == 2) {
-			println("Device ID: " + m);
+			// println("Device ID: " + m);
 		} else if (i == 4) {
-			println("Command Format: " + m);
+			// println("Command Format: " + m);
 		} else if (i == 5) {
-			println("Command: " + m);
+			// println("Command: " + m);
 		} else if (i >= 6) {
 			parseLXCue(m);
 		}
 	}
-	println("Cue List: " + cueList);
+	// println("Cue List: " + cueList);
 	println("Cue Number: " + cueNumber);
 	commandData = "";
-	println();
-	println();
+	// println();
+	// println();
 }
 
 void parseLXCue(String m) {

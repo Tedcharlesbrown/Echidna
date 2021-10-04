@@ -16,7 +16,6 @@ void eosOSCParse(OscMessage theOscMessage) {
 			eosPreviousCue = eosCueParse(argumentZero).get(0);
 		} else if (address.equals("/eos/out/active/cue/text") && argumentZero.length() != 0) {
 			eosCurrentCue = eosCueParse(argumentZero).get(0);
-			println(eosCurrentCue);
 		} else if (address.equals("/eos/out/pending/cue/text") && argumentZero.length() != 0) {
 			eosPendingCue = eosCueParse(argumentZero).get(0);
 			eosPendingCueTime = eosCueParse(argumentZero).get(1);

@@ -7,35 +7,36 @@
   <script src="script.js"></script>
 
 <body>
-  <img src="webImage.png" alt="Processing Export">
+  <img id="image" src="webImage.png" alt="Processing Export">
   <div class="data">
     <div class="time">
-      <h1 class="timeDisplay">Time: ?TIME</h1>
+      <h1 class="timeDisplay" id="timeText"></h1>
     </div>
-    <br>
     <br>
     <div class="timecode">
-      <h1 class="timecodeDisplay">TimeCode: ?TC</h1>
+      <h1 class="timecodeDisplay" id="timecodeText"></h1>
     </div>
-    <br>
     <br>
     <div class="lighting">
       <div class="lxCurentCue">
-        <h1 class="lxNow">LX Current Cue: ?LXNOW</h1>
-        <h1 class="lxNowTime">LX Current Cue Time: ?LXNOWTIME</h1>
+        <h1 class="lxNow" id="lxNow"></h1>
       </div>
       <hr>
       <div class="lxNextCue">
-        <h1 class="lxNext">LX Pending Cue: ?LXNEXT</h1>
-        <h1 class="lxNext">LX Pending Cue Time: ?LXNEXTTIME</h1>
+        <h1 class="lxNext" id="lxNext"></h1>
       </div>
     </div>
     <br>
-    <br>
     <div class="video">
-      <h1 class="D3Now">D3 Current Cue: ?D3NOW</h1>
-      <h1 class="D3Next">D3 Pending Cue: ?D3NEXT</h1>
-      <h1 class="D3Time">D3 Timeline: ?D3Time</h1>
+      <h1 class="D3Now" id="D3Now"></h1>
+      <hr>
+      <h1 class="D3Next" id="D3Next"></h1>
+      <hr>
+      <h1 class="D3Time" id="D3Time"></h1>
+    </div>
+    <br>
+    <div class="console">
+      <h2 class="consoleText" id="consoleText"></h2>
     </div>
   </div>
 </body>
