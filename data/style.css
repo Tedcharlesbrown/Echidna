@@ -1,0 +1,43 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+h1 {
+  color: white;
+  font-size: 20px;
+}
+
+img {
+  width: 60%;
+  float: right;
+  border-style: solid;
+}
+
+.data {
+  padding-left: 10px;
+}
+
+.time {
+  width: 35%;
+  padding-left: 10px;
+  border-style: solid;
+}
+
+.timecode {
+  width: 35%;
+  padding-left: 10px;
+  border-style: solid;
+}
+
+.lighting {
+  width: 35%;
+  padding-left: 10px;
+  border-style: solid;
+}
+
+.video {
+  width: 35%;
+  padding-left: 10px;
+  border-style: solid;
+}

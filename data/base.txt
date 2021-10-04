@@ -10,7 +10,7 @@
   <img src="webImage.png" alt="Processing Export">
   <div class="data">
     <div class="time">
-      <h1 class="timeDisplay">Time: 17:52.21</h1>
+      <h1 class="timeDisplay">Time: ?TIME</h1>
     </div>
     <br>
     <br>
