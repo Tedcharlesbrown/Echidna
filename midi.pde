@@ -5,9 +5,12 @@ import javax.sound.midi.ShortMessage;
 
 MidiBus myBus; // The MidiBus
 
-String commandData = "";
-String cueNumber = "";
-String cueList = "";
+String lxMidiCommandData = "";
+String lxOldMidiCueNumber = "";
+String lxMidiCueNumber = "";
+String lxMidiCueList = "";
+
+
 
 int indexStart, indexEnd;
 
@@ -36,36 +39,36 @@ void parseSYSEX(MidiMessage message) {
 			parseLXCue(m);
 		}
 	}
-	// println("Cue List: " + cueList);
-	println("Cue Number: " + cueNumber);
-	commandData = "";
+	// println("Cue List: " + lxMidiCueList);
+	// println("Cue Number: " + lxMidiCueNumber);
+	lxMidiCommandData = "";
 	// println();
 	// println();
 }
 
 void parseLXCue(String m) {
 	if (!m.equals("F7")) { //IGNORE MIDI ENDING
-		commandData += m + " ";
+		lxMidiCommandData += m + " ";
 	}
-	indexEnd = commandData.indexOf("00"); //Find split
+	indexEnd = lxMidiCommandData.indexOf("00"); //Find split
 	if (indexEnd != -1) { //If cannot find split
 		//GET CUE NUMBER
-		cueNumber = commandData.substring(0, indexEnd);
-		String[] split = split(cueNumber, ' ');
-		cueNumber = "";
+		lxMidiCueNumber = lxMidiCommandData.substring(0, indexEnd);
+		String[] split = split(lxMidiCueNumber, ' ');
+		lxMidiCueNumber = "";
 		for (int i = 0; i < split.length - 1; i++) {
 			if (split[i].charAt(1) == 'E') {
-				cueNumber += ".";
+				lxMidiCueNumber += ".";
 			} else {
-				cueNumber += split[i].charAt(1);
+				lxMidiCueNumber += split[i].charAt(1);
 			}
 		}
 		//GET CUE LIST
-		cueList = commandData.substring(indexEnd + 3, commandData.length());
-		split = split(cueList, ' ');
-		cueList = "";
+		lxMidiCueList = lxMidiCommandData.substring(indexEnd + 3, lxMidiCommandData.length());
+		split = split(lxMidiCueList, ' ');
+		lxMidiCueList = "";
 		for (int i = 0; i < split.length - 1; i++) {
-			cueList += split[i].charAt(1);
+			lxMidiCueList += split[i].charAt(1);
 		}
 	}
 }

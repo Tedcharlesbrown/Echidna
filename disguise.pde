@@ -12,7 +12,15 @@ String d3BrightnessAddress = d3Address + "brightness";
 String d3BPMAddress = d3Address + "bpm";
 String d3ModeAddress = d3Address + "playmode";
 
-String d3Position, d3Name, d3ID, d3CurrentCue, d3NextCue, d3Hint, d3Mode;
+String d3Position = "";
+String d3Mode = "";
+String d3Hint = "";
+String d3NextCue = "";
+String d3ID = "";
+String d3Name = "";
+String d3OldCurrentCue = "";
+String d3CurrentCue = "";
+
 float d3Heart, d3Volume, d3Brightness, d3BPM;
 
 void d3OSCParse(OscMessage theOscMessage) {
