@@ -4,11 +4,29 @@ body {
 }
 
 h1 {
-  font-size: 20px;
+  font-size: 15px;
+  text-decoration: underline;
+  margin-bottom: 10px;
+  padding-right: 10px;
+  color: grey;
 }
 
 h2 {
+  font-size: 25px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: darkred;
+  color: white;
   font-size: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.imgContainer {
+  
 }
 
 img {
@@ -19,34 +37,57 @@ img {
 
 .data {
   padding-left: 10px;
+  width: 37.5%;
+}
+
+.topBar {
+  padding-left: 10px;
+  margin: auto;
+  display: flex;
+  height: 50px;
+}
+
+.barOption {
+  border-style: solid;
+  width: 33%;
+  text-align: center;
 }
 
 .time {
-  width: 35%;
   padding-left: 10px;
   border-style: solid;
 }
 
 .timecode {
-  width: 35%;
   padding-left: 10px;
   border-style: solid;
 }
 
 .lighting {
-  width: 35%;
   padding-left: 10px;
   border-style: solid;
 }
 
 .video {
-  width: 35%;
   padding-left: 10px;
   border-style: solid;
 }
 
 .console {
-  width: 35%;
   padding-left: 10px;
   border-style: solid;
+}
+
+@media screen and (max-width: 1000px) {
+  img {
+    float: none;
+    margin-left: 10px;
+    margin-bottom: 20px;
+  }
+  .data {
+    width: 99%;
+  }
+  button {
+    font-size: 15px;
+  }
 }

@@ -7,35 +7,50 @@
   <script src="script.js"></script>
 
 <body>
+  <div class="topBar">
+    <div class="barOption">
+      <button type="button">OBS STATUS: STAND BY</button>
+    </div>
+    <div class="barOption">
+      <button type="button">LIGHTING: OUT OF SYNC</button>
+    </div>
+    <div class="barOption">
+      <button type="button">TAKE PICTURE</button>
+    </div>
+  </div>
+  <br>
   <img id="image" src="webImage.png" alt="Processing Export">
   <div class="data">
     <div class="time">
-      <h1 class="timeDisplay" id="timeText"></h1>
+      <h1>Time:</h1>
+      <h2 class="timeDisplay" id="timeText">Time</h2>
     </div>
     <br>
     <div class="timecode">
-      <h1 class="timecodeDisplay" id="timecodeText"></h1>
+      <h1>TimeCode:
+        <h2 class="timecodeDisplay" id="timecodeText">Timecode</h2>
     </div>
     <br>
     <div class="lighting">
       <div class="lxCurentCue">
-        <h1 class="lxNow" id="lxNow"></h1>
-      </div>
-      <hr>
-      <div class="lxNextCue">
-        <h1 class="lxNext" id="lxNext"></h1>
+        <h1>LX Current Cue:
+          <h2 class="lxNow" id="lxNow">LX CUE</h2>
+          <hr>
+          <h1>Next LX Trigger:</h1>
+          <h2 class="D3Time" id="D3Time">D3 Hint</h2>
       </div>
     </div>
     <br>
     <div class="video">
-      <h1 class="D3Now" id="D3Now"></h1>
+      <h1>D3 Current Cue:</h1>
+      <h2 class="D3Now" id="D3Now">Current Cue Name</h2>
       <hr>
-      <h1 class="D3Next" id="D3Next"></h1>
-      <hr>
-      <h1 class="D3Time" id="D3Time"></h1>
+      <h1>D3 Pending Cue:</h1>
+      <h2 class="D3Next" id="D3Next">Next Cue Name</h2>
     </div>
     <br>
     <div class="console">
+      <h1>History:</h1>
       <h2 class="consoleText" id="consoleText"></h2>
     </div>
   </div>
