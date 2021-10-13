@@ -7,19 +7,8 @@
   <script src="script.js"></script>
 
 <body>
-  <div class="topBar">
-    <div class="barOption">
-      <button type="button">OBS STATUS: STAND BY</button>
-    </div>
-    <div class="barOption">
-      <button type="button">LIGHTING: OUT OF SYNC</button>
-    </div>
-    <div class="barOption">
-      <button type="button">TAKE PICTURE</button>
-    </div>
-  </div>
-  <br>
-  <img id="image" src="webImage.png" alt="Processing Export">
+  <img class="feed" id="feed" src="showfeed.png" alt="Main Feed">
+  <img class="multiview" id="multiview" src="multiview.png" alt="Multiview">
   <div class="data">
     <div class="time">
       <h1>Time:</h1>
@@ -37,7 +26,7 @@
           <h2 class="lxNow" id="lxNow">LX CUE</h2>
           <hr>
           <h1>Next LX Trigger:</h1>
-          <h2 class="D3Time" id="D3Time">D3 Hint</h2>
+          <h2 class="D3NextTrigger" id="D3NextTrigger">D3 Hint</h2>
       </div>
     </div>
     <br>

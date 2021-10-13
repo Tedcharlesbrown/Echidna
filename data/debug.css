@@ -17,44 +17,65 @@ h2 {
   margin-bottom: 10px;
 }
 
-img {
-  width: 60%;
-  float: right;
+button {
+  background-color: darkred;
+  color: white;
+  font-size: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.topBar {
+  padding-left: 10px;
+  margin: auto;
+  display: flex;
+  height: 50px;
+}
+
+.barOption {
+  border-style: solid;
+  width: 33%;
+  text-align: center;
+}
+
+.parent {
+  width: 100%;
+  display: flex;
+  padding-bottom: 10px;
+}
+.d3half {
+  width: 100%;
+  display: flex;
+  padding-bottom: 10px;
+}
+
+.whole {
+  width: 99%;
+  padding-left: 10px;
   border-style: solid;
 }
 
-.feed {
-  margin-bottom: 10px;
-}
-
-.data {
-  padding-left: 10px;
-  width: 37.5%;
-}
-
-.time {
+.fourth {
+  width: 25%;
   padding-left: 10px;
   border-style: solid;
 }
 
-.timecode {
+.sixth {
+  width: 12.5%;
   padding-left: 10px;
   border-style: solid;
 }
 
-.lighting {
-  padding-left: 10px;
-  border-style: solid;
-}
-
-.video {
+.half {
+  width: 50%;
   padding-left: 10px;
   border-style: solid;
 }
 
 .console {
   overflow:  scroll;
-  height: 500px;
+  height: 450px;
   padding-left: 10px;
   border-style: solid;
 }
@@ -66,29 +87,4 @@ clock {
 
 highlight {
   color: red;
-}
-
-@media screen and (max-width: 1000px) {
-  .trigger {
-    float: none;
-    margin-left: 10px;
-    margin-bottom: 20px;
-    width: 99%;
-  }
-  
-  img {
-    float: none;
-    margin-left: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .multiview {
-    display: none;
-  }
-  .data {
-    width: 99%;
-  }
-  button {
-    font-size: 15px;
-  }
 }

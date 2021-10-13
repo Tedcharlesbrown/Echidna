@@ -1,24 +1,14 @@
 import processing.video.*;
 
-Capture video;
-
 String clock;
 
 void setup() {
   size(960, 540);
-  surface.setResizable(true);
-
-  printArray(Capture.list());
-  video = new Capture(this, 1920/2, 1080/2, Capture.list()[1], 30);
-  video.start();
+  // surface.setResizable(true);
 
   serverSetup();
   setupMIDI();
   setupOSC();
-}
-
-void captureEvent(Capture video) {
-  video.read();
 }
 
 int delay = 0;
@@ -28,8 +18,6 @@ int videoDelay = 150;
 void draw() {
   getClock();
   background(0);
-
-  image(video, 0, 0);
 
   screenshot();
 }
@@ -61,16 +49,16 @@ void getClock() {
 
 
 void screenshot() {
-  if (!d3OldCurrentCue.equals(d3CurrentCue) || !lxOldMidiCueNumber.equals(lxMidiCueNumber)) {
-   delay = millis();
-   d3OldCurrentCue = d3CurrentCue;
-   lxOldMidiCueNumber = lxMidiCueNumber;
-   trigger = true;
-  } else {
-   if (millis() > delay + videoDelay && trigger) {
-     saveFrame("data/webImage.png");
-     trigger = false;
-     // println("SAVE FRAME");
-   }
-  }
+  // if (!d3OldCurrentCue.equals(d3CurrentCue) || !lxOldMidiCueNumber.equals(lxMidiCueNumber)) {
+  //  delay = millis();
+  //  d3OldCurrentCue = d3CurrentCue;
+  //  lxOldMidiCueNumber = lxMidiCueNumber;
+  //  trigger = true;
+  // } else {
+  //  if (millis() > delay + videoDelay && trigger) {
+  //    saveFrame("data/showfeed.png");
+  //    trigger = false;
+  //    // println("SAVE FRAME");
+  //  }
+  // }
 }

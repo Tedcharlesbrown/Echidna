@@ -5,18 +5,26 @@ import javax.sound.midi.ShortMessage;
 
 MidiBus myBus; // The MidiBus
 
+String stopOrResume = "[STOP] OR [RESUME]";
+
+String lxMidiRaw = "";
+String lxMidiDeviceID = "";
+String lxMidiCommandFormat = "";
+String lxMidiCommand = "";
 String lxMidiCommandData = "";
+String lxMidiCommandDataRaw = "";
 String lxOldMidiCueNumber = "";
 String lxMidiCueNumber = "";
+String lxMidiList1CueNumber = "";
 String lxMidiCueList = "";
 
-
+String lxMidiCueHistory = "";
 
 int indexStart, indexEnd;
 
 void setupMIDI() {
 	MidiBus.list();
-	myBus = new MidiBus(this,0,-1);
+	myBus = new MidiBus(this, 0, -1);
 }
 
 
@@ -24,29 +32,45 @@ void midiMessage(MidiMessage message) {
 	if (message.getMessage().length >= 10) {
 		parseSYSEX(message);
 	}
+	lxMidiRaw = "";
+	for (int i = 0; i < message.getMessage().length - 1; i++) {
+		String m = hex(message.getMessage()[i]);
+		lxMidiRaw += m;
+	}
 }
 
 void parseSYSEX(MidiMessage message) {
+	lxMidiCommandDataRaw = "";
 	for (int i = 1; i < message.getMessage().length; i++) {
 		String m = hex(message.getMessage()[i]);
 		if (i == 2) {
-			// println("Device ID: " + m);
+			lxMidiDeviceID = m;
 		} else if (i == 4) {
-			// println("Command Format: " + m);
+			lxMidiCommandFormat = m;
 		} else if (i == 5) {
-			// println("Command: " + m);
+			lxMidiCommand = m;
 		} else if (i >= 6) {
 			parseLXCue(m);
+			lxMidiCommandDataRaw += m;
 		}
 	}
 	// println("Cue List: " + lxMidiCueList);
 	// println("Cue Number: " + lxMidiCueNumber);
-	lxMidiCommandData = "";
-	// println();
-	// println();
+	if (lxMidiCueList.equals("1") && lxMidiCueNumber.indexOf("[") == -1) {
+		lxMidiList1CueNumber = lxMidiCueNumber;
+	}
+	lxHistory();
+	lxMidiCommandData = ""; //Reset Command
+}
+
+void lxHistory() {
+	lxMidiCueHistory += "<clock>" + clock + ": " + "</clock>";
+	lxMidiCueHistory += lxMidiCueList + " / " + lxMidiCueNumber;
+	lxMidiCueHistory += ",";
 }
 
 void parseLXCue(String m) {
+	
 	if (!m.equals("F7")) { //IGNORE MIDI ENDING
 		lxMidiCommandData += m + " ";
 	}
@@ -62,6 +86,16 @@ void parseLXCue(String m) {
 			} else {
 				lxMidiCueNumber += split[i].charAt(1);
 			}
+		}
+		if (lxMidiCueNumber.equals("0")) {
+			if (lxMidiCommand.equals("02")) {
+				lxMidiCueNumber = "[STOP]";
+			} else if (lxMidiCommand.equals("03")) {
+				lxMidiCueNumber = "[RESUME]";
+			} else {
+				lxMidiCueNumber = stopOrResume;
+			}
+			
 		}
 		//GET CUE LIST
 		lxMidiCueList = lxMidiCommandData.substring(indexEnd + 3, lxMidiCommandData.length());
