@@ -74,7 +74,8 @@ void d3FloatParse(String address, float value) {
 }
 
 void parseD3Hint(String value) {
-  // int indexStart = value.indexOf('\t' + "CUE");
+  //NEED TO MAKE CURRENTTRIGGER VARIABLE -----------------------------------------------
+
   int indexStart = value.indexOf("+");
   value = value.substring(indexStart + 12).trim();
 
@@ -84,6 +85,20 @@ void parseD3Hint(String value) {
   d3NextTriggerType = value.substring(0, indexStart).trim();
   d3NextTrigger = value.substring(indexStart, indexEnd).trim();
 }
+
+/*void outofordersync() {
+  if (lxCurrentCue > nextTrigger && nextTriggerType.equals(CUE)) {
+    while (lxCurrentCue > nextTrigger) {
+      goto next d3Cue
+    }
+  }
+  
+  if (lxCurrentCue < curentTrigger && previousTriggerType.equals(CUE)) {
+   while (lxCurrentCue < currentTrigger) {
+      goto lxCurrentCue--
+    }
+  }
+}*/
 
 void d3Debug() {
   if (!d3CurrentCue.equals(d3OldCurrentCue)) {
