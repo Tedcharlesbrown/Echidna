@@ -1,12 +1,11 @@
-import processing.video.*;
-
 String clock = "";
 String debug = "";
 
 void setup() {
   size(960, 540);
-  // surface.setResizable(true);
+  setupSettings();
 
+  setupGui();
   serverSetup();
   setupMIDI();
   setupOSC();
@@ -19,6 +18,7 @@ int videoDelay = 150;
 void draw() {
   getClock();
   background(0);
+
 
   screenshot();
 }

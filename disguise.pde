@@ -16,6 +16,8 @@ String d3Position = "";
 String d3Mode = "";
 String d3Hint = "";
 String d3NextCue = "";
+String d3CurrentTriggerType = "";
+String d3CurrentTrigger = "";
 String d3NextTriggerType = "";
 String d3NextTrigger = "";
 String d3ID = "";
@@ -74,9 +76,17 @@ void d3FloatParse(String address, float value) {
 }
 
 void parseD3Hint(String value) {
-  //NEED TO MAKE CURRENTTRIGGER VARIABLE -----------------------------------------------
+  int indexStart;
+  int indexEnd;
 
-  int indexStart = value.indexOf("+");
+  // if (value.indexOf("+") > value.indexOf("CUE")) {
+  //   indexStart = value.indexOf("CUE");
+  //   indexEnd = value.indexOf("|");
+
+  //   d3CurrentTrigger = value.indexOf(indexStart + 4, indexEnd).trim();
+  // }
+
+  indexStart = value.indexOf("+");
   value = value.substring(indexStart + 12).trim();
 
   indexStart = value.indexOf(" ");
@@ -93,7 +103,7 @@ void parseD3Hint(String value) {
     }
   }
   
-  if (lxCurrentCue < curentTrigger && previousTriggerType.equals(CUE)) {
+  if (lxCurrentCue < curentTrigger && currentTriggerType.equals(CUE)) {
    while (lxCurrentCue < currentTrigger) {
       goto lxCurrentCue--
     }

@@ -24,7 +24,9 @@ int indexStart, indexEnd;
 
 void setupMIDI() {
 	MidiBus.list();
-	myBus = new MidiBus(this, 0, -1);
+	// println(MidiBus.availableInputs());
+	// println(MidiBus.availableOutputs());
+	myBus = new MidiBus(this, int(MIDI_INPUT), int(MIDI_OUTPUT));
 }
 
 

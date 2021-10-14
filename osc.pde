@@ -6,10 +6,10 @@ NetAddress eosOut;
 
 
 void setupOSC() {
-	disguiseIn = new OscP5(this, 7400);
-	reaperIn = new OscP5(this, 9000);
-	eosIn = new OscP5(this, 4444);
-	eosOut = new NetAddress("192.168.1.202", 3333);
+	disguiseIn = new OscP5(this, int(PORT_DISGUISE_IN));
+	reaperIn = new OscP5(this, int(PORT_REAPER_IN));
+	// eosIn = new OscP5(this, int(PORT_EOS_IN));
+	// eosOut = new NetAddress(IP_EOS_OUT, int(PORT_EOS_OUT));
 }
 
 /* incoming osc message are forwarded to the oscEvent method. */

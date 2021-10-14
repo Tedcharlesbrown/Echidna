@@ -6,19 +6,23 @@ String[] serverText;
 
 void serverSetup() {
 
-  server = new SimpleHTTPServer(this);
-  DynamicResponseHandler responder = new DynamicResponseHandler(new JSONEcho(), "application/json");
-  server.createContext("echo", responder);
+  try {
+    server = new SimpleHTTPServer(this, int(PORT_HTTP));
+    DynamicResponseHandler responder = new DynamicResponseHandler(new JSONEcho(), "application/json");
+    server.createContext("echo", responder);
 
-  server.serve("index.html");
-  server.serve("style.css");
-  server.serve("script.js");
-  
-  server.serve("debug.html");
-  server.serve("debug.css");
+    server.serve("index.html");
+    server.serve("style.css");
+    server.serve("script.js");
 
-  server.serve("showfeed.png");
-  server.serve("multiview.png");
+    server.serve("debug.html");
+    server.serve("debug.css");
+
+    server.serve("showfeed.png");
+    server.serve("multiview.png");
+  } catch (Exception e) {
+
+  }
 
 }
 
@@ -44,7 +48,7 @@ class JSONEcho extends ResponseBuilder {
     json.setString("lxCommandData", lxMidiCommandDataRaw);
 
     json.setString("lxCueList", lxMidiCueList);
-    json.setString("lxNowAll",lxMidiCueNumber);
+    json.setString("lxNowAll", lxMidiCueNumber);
 
 
     json.setString("d3Position", d3Position);
