@@ -21,6 +21,6 @@ void oscEvent(OscMessage theOscMessage) {
 		eosOSCParse(theOscMessage);
 	} else if (address.indexOf(reaperTime) != -1) { //From REAPER
 		reaperParse(theOscMessage);
-	} 
+	}
 }
 

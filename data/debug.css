@@ -17,8 +17,17 @@ h2 {
   margin-bottom: 10px;
 }
 
+h3 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 25px;
+  padding-left: 10px;
+  text-align: center;
+  color: white;
+}
+
 button {
-  background-color: darkred;
+/*   background-color: darkred; */
   color: white;
   font-size: 20px;
   width: 100%;
@@ -26,9 +35,9 @@ button {
 }
 
 .topBar {
-  padding-left: 10px;
   margin: auto;
   display: flex;
+  width: 100%;
   height: 50px;
 }
 
@@ -41,41 +50,51 @@ button {
 .parent {
   width: 100%;
   display: flex;
-  padding-bottom: 10px;
 }
-.d3half {
+
+.d3 {
+  border-style: solid;
+  color: #9000ff;
   width: 100%;
-  display: flex;
-  padding-bottom: 10px;
+}
+
+.lx {
+  border-style: solid;
+  color: #fff700;
+  width: 100%;
 }
 
 .whole {
   width: 99%;
   padding-left: 10px;
   border-style: solid;
+  color: white;
 }
 
 .fourth {
   width: 25%;
   padding-left: 10px;
   border-style: solid;
+  color: white;
 }
 
 .sixth {
   width: 12.5%;
   padding-left: 10px;
   border-style: solid;
+  color: white;
 }
 
 .half {
   width: 50%;
   padding-left: 10px;
   border-style: solid;
+  color: white;
 }
 
 .console {
-  overflow:  scroll;
-  height: 450px;
+  overflow: scroll;
+  height: 500px;
   padding-left: 10px;
   border-style: solid;
 }
@@ -87,4 +106,16 @@ clock {
 
 highlight {
   color: red;
+}
+
+debug {
+  font-size: 15px;
+}
+
+lx {
+  color: yellow;
+}
+
+d3 {
+  color: #9000ff;
 }

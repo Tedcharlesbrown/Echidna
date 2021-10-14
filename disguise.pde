@@ -31,6 +31,7 @@ void d3OSCParse(OscMessage theOscMessage) {
   } else if (theOscMessage.checkTypetag("f")) {
     d3FloatParse(theOscMessage.addrPattern(), theOscMessage.get(0).floatValue());
   }
+  d3Debug();
 }
 
 void d3StringParse(String address, String value) {
@@ -82,4 +83,21 @@ void parseD3Hint(String value) {
 
   d3NextTriggerType = value.substring(0, indexStart).trim();
   d3NextTrigger = value.substring(indexStart, indexEnd).trim();
+}
+
+void d3Debug() {
+  if (!d3CurrentCue.equals(d3OldCurrentCue)) {
+    debug += "<clock>" + clock + ": " + "</clock>";
+    debug += "<d3>";
+    debug += "D3:   ";
+    debug += d3CurrentCue;
+    debug += "   |   " + "<debug>";
+    debug += "Position: " + d3Hint + ";";
+    debug += " Next Trigger: " + d3NextTrigger;
+    debug += "</d3>";
+    debug += "</debug>";
+    debug += ",";
+
+    d3OldCurrentCue = d3CurrentCue;
+  }
 }

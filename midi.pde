@@ -31,6 +31,12 @@ void setupMIDI() {
 void midiMessage(MidiMessage message) {
 	if (message.getMessage().length >= 10) {
 		parseSYSEX(message);
+	} else {
+		for (int i = 0; i < message.getMessage().length - 1; i++) {
+			String m = hex(message.getMessage()[i]);
+			debug += "<clock>" + clock + ": " + "</clock>";
+			debug += m + ",";
+		}
 	}
 	lxMidiRaw = "";
 	for (int i = 0; i < message.getMessage().length - 1; i++) {
@@ -59,18 +65,31 @@ void parseSYSEX(MidiMessage message) {
 	if (lxMidiCueList.equals("1") && lxMidiCueNumber.indexOf("[") == -1) {
 		lxMidiList1CueNumber = lxMidiCueNumber;
 	}
-	lxHistory();
+	lxDebug();
 	lxMidiCommandData = ""; //Reset Command
 }
 
-void lxHistory() {
+void lxDebug() {
 	lxMidiCueHistory += "<clock>" + clock + ": " + "</clock>";
 	lxMidiCueHistory += lxMidiCueList + " / " + lxMidiCueNumber;
 	lxMidiCueHistory += ",";
+
+	debug += "<clock>" + clock + ": " + "</clock>";
+	debug += "<lx>";
+	debug += "LX:   ";
+	debug += lxMidiCueList + " / " + lxMidiCueNumber;
+	debug += "   |   " + "<debug>";
+	debug += "ID: " + lxMidiDeviceID + ";";
+	debug += " Format: " + lxMidiCommandFormat + ";";
+	debug += " Command: " + lxMidiCommand + ";";
+	debug += " Data: " + lxMidiCommandDataRaw;
+	debug += "</lx>";
+	debug += "</debug>";
+	debug += ",";
 }
 
 void parseLXCue(String m) {
-	
+
 	if (!m.equals("F7")) { //IGNORE MIDI ENDING
 		lxMidiCommandData += m + " ";
 	}
@@ -95,7 +114,7 @@ void parseLXCue(String m) {
 			} else {
 				lxMidiCueNumber = stopOrResume;
 			}
-			
+
 		}
 		//GET CUE LIST
 		lxMidiCueList = lxMidiCommandData.substring(indexEnd + 3, lxMidiCommandData.length());

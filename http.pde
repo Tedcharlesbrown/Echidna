@@ -22,12 +22,17 @@ void serverSetup() {
 
 }
 
+boolean obsStatus = false;
+
 
 class JSONEcho extends ResponseBuilder {
   public  String getResponse(String requestBody) {
     JSONObject json = parseJSONObject(requestBody);
     // println(json);
     // int number = json.getInt("requestClock");
+    json.setBoolean("obs", obsStatus);
+
+
     json.setString("clock", clock);
     json.setString("timeCode", timeCode);
 
@@ -52,6 +57,8 @@ class JSONEcho extends ResponseBuilder {
     json.setString("d3NextTrigger", d3NextTriggerType + " : " + d3NextTrigger);
 
     json.setString("lxHistory", lxMidiCueHistory);
+    json.setString("debugText", debug);
+
     return json.toString();
   }
 }

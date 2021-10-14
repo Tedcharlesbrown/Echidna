@@ -24,10 +24,18 @@ setInterval(function() {
                 document.getElementById("multiview").src = "multiview.png?t=" + timestamp;
                 document.getElementById("lxNow").innerHTML = response.lxCurrentList1Cue;
 
-                parseHistory(response.lxHistory);
+                parseHistory(response.lxHistory, false);
             }
 
             if (fileName == "debug.html") {
+                if (!response.obs) {
+                    document.getElementById("obs").style.backgroundColor = "green";
+                    document.getElementById("obs").innerHTML = "OBS STATUS: STAND BY";
+                } else {
+                    document.getElementById("obs").style.backgroundColor = "darkred";
+                    document.getElementById("obs").innerHTML = "OBS STATUS: ";
+                }
+
                 document.getElementById("D3Position").innerHTML = response.d3Position;
                 document.getElementById("D3Hint").innerHTML = response.d3Hint;
                 document.getElementById("D3Track").innerHTML = response.d3Name;
@@ -41,6 +49,8 @@ setInterval(function() {
 
                 document.getElementById("lxNowAll").innerHTML = response.lxNowAll;
                 document.getElementById("lxCueList").innerHTML = response.lxCueList;
+
+                parseHistory(response.debugText, true);
             }
 
         }
@@ -49,21 +59,26 @@ setInterval(function() {
     xhr.send('{request:' + randomNumber + '}');
 }, 1000);
 
-function parseHistory(response) {
-    var lxHistory = [];
+function parseHistory(response, debug) {
+    var parsedArray = [];
     var responseArray = response.split(",");
     for (var i = 0; i < responseArray.length - 1; i++) {
         if (responseArray[i].indexOf("[") != -1) {
-            lxHistory.unshift("<highlight>" + responseArray[i] + "</highlight>" + "<br>");
+            parsedArray.unshift("<highlight>" + responseArray[i] + "</highlight>" + "<br>");
         } else {
-            lxHistory.unshift(responseArray[i] + "<br>");
+            parsedArray.unshift(responseArray[i] + "<br>");
         }
     }
 
-    var output = lxHistory.join('');
+    var output = parsedArray.join('');
     output = output.replace(',', '');
 
-    document.getElementById("consoleText").innerHTML = output;
+    if (debug) {
+        document.getElementById("debugText").innerHTML = output;
+        
+    } else {
+        document.getElementById("consoleText").innerHTML = output;
+    }
 }
 
 function getFileName() {

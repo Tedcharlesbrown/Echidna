@@ -1,6 +1,7 @@
 import processing.video.*;
 
-String clock;
+String clock = "";
+String debug = "";
 
 void setup() {
   size(960, 540);

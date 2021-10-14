@@ -8,7 +8,7 @@
 
   <div class="topBar">
     <div class="barOption">
-      <button type="button">OBS STATUS: STAND BY</button>
+      <button type="button" id="obs">OBS STATUS: STAND BY</button>
     </div>
     <div class="barOption">
       <button type="button">LIGHTING: OUT OF SYNC</button>
@@ -28,75 +28,81 @@
       <h2 id="timecodeText"></h2>
   </div>
   <br>
-  <div class="whole">
-    <h1>Position:</h1>
-    <h2 id="D3Position"></h2>
+  <div class=d3>
+    <h3>D I S G U I S E</h3>
+    <div class="whole">
+      <h1>Position:</h1>
+      <h2 id="D3Position"></h2>
+    </div>
+    <div class="whole">
+      <h1>Hint:</h1>
+      <h2 id="D3Hint"></h2>
+    </div>
+
+    <div class="parent">
+      <div class="sixth">
+        <h1>Track:</h1>
+        <h2 id="D3Track"></h2>
+      </div>
+      <div class="sixth">
+        <h1>Mode:</h1>
+        <h2 id="D3Mode"></h2>
+      </div>
+      <div class="fourth">
+        <h1>Current Cue:</h1>
+        <h2 id="D3Now"></h2>
+      </div>
+      <div class="fourth">
+        <h1>Next Cue:</h1>
+        <h2 id="D3Next"></h2>
+      </div>
+      <div class="fourth">
+        <h1>Next LX Trigger:</h1>
+        <h2 id="D3NextTrigger"></h2>
+      </div>
+    </div>
   </div>
   <br>
-  <div class="whole">
-    <h1>Hint:</h1>
-    <h2 id="D3Hint"></h2>
+  <div class="lx">
+    <h3>L I G H T I N G</h3>
+    <div class="whole">
+      <h1>MIDI Raw:</h1>
+      <h2 id="lxMidiRaw"></h2>
+    </div>
+    <div class="parent">
+      <div class="fourth">
+        <h1>Device ID:</h1>
+        <h2 id="lxDeviceID"></h2>
+      </div>
+      <div class="fourth">
+        <h1>Command Format:</h1>
+        <h2 id="lxCommandFormat"></h2>
+      </div>
+      <div class="fourth">
+        <h1>Command:</h1>
+        <h2 id="lxCommand"></h2>
+      </div>
+      <div class="fourth">
+        <h1>Command Data:</h1>
+        <h2 id="lxCommandData"></h2>
+      </div>
+    </div>
+    <div class="parent">
+      <div class="half">
+        <h1>Cue List:</h1>
+        <h2 id="lxCueList"></h2>
+      </div>
+      <div class="half">
+        <h1>Cue Number:</h1>
+        <h2 id="lxNowAll"></h2>
+      </div>
+    </div>
   </div>
   <br>
-  <div class="parent">
-    <div class="sixth">
-      <h1>Track:</h1>
-      <h2 id="D3Track"></h2>
-    </div>
-    <div class="sixth">
-      <h1>Mode:</h1>
-      <h2 id="D3Mode"></h2>
-    </div>
-    <div class="fourth">
-      <h1>Current Cue:</h1>
-      <h2 id="D3Now"></h2>
-    </div>
-    <div class="fourth">
-      <h1>Next Cue:</h1>
-      <h2 id="D3Next"></h2>
-    </div>
-    <div class="fourth">
-      <h1>Next LX Trigger:</h1>
-      <h2 id="D3NextTrigger"></h2>
-    </div>
-  </div>
-  <div class="whole">
-    <h1>MIDI Raw:</h1>
-    <h2 id="lxMidiRaw"></h2>
-  </div>
-  <div class="parent">
-    <div class="fourth">
-      <h1>Device ID:</h1>
-      <h2 id="lxDeviceID"></h2>
-    </div>
-    <div class="fourth">
-      <h1>Command Format:</h1>
-      <h2 id="lxCommandFormat"></h2>
-    </div>
-    <div class="fourth">
-      <h1>Command:</h1>
-      <h2 id="lxCommand"></h2>
-    </div>
-    <div class="fourth">
-      <h1>Command Data:</h1>
-      <h2 id="lxCommandData"></h2>
-    </div>
-  </div>
-  <div class="parent">
-    <div class="half">
-      <h1>Cue List:</h1>
-      <h2 id="lxCueList"></h2>
-    </div>
-    <div class="half">
-      <h1>Cue Number:</h1>
-      <h2 id="lxNowAll"></h2>
-    </div>
-    <br>
-  </div>
   <div class="console">
     <h1>Debug:</h1>
-    <h2id="debugText"></h2>
+    <h2 id="debugText">
+      </h2>
   </div>
   </body>
-
 </html>
