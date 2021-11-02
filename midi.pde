@@ -93,6 +93,16 @@ void lxDebug() {
 	debug += "</lx>";
 	debug += "</debug>";
 	debug += ",";
+
+	TableRow newRow = debugTable.addRow();
+	newRow.setString("Time",clock);
+	newRow.setString("RecordTime",millisToTimecode(millis()));
+	newRow.setString("Trigger","LX");
+	newRow.setString("Timecode", timeCode);
+	newRow.setString("D3 Time", d3Position);
+	newRow.setString("LX Cue", lxMidiCueList + "/" + lxMidiCueNumber);
+	newRow.setString("D3 Cue", d3CurrentCue);
+	saveTable(debugTable,"data/debug.csv");
 }
 
 void parseLXCue(String m) {

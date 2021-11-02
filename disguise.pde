@@ -102,7 +102,7 @@ void parseD3Hint(String value) {
       goto next d3Cue
     }
   }
-  
+
   if (lxCurrentCue < curentTrigger && currentTriggerType.equals(CUE)) {
    while (lxCurrentCue < currentTrigger) {
       goto lxCurrentCue--
@@ -124,5 +124,15 @@ void d3Debug() {
     debug += ",";
 
     d3OldCurrentCue = d3CurrentCue;
+
+    TableRow newRow = debugTable.addRow();
+    newRow.setString("Time", clock);
+    newRow.setString("RecordTime", millisToTimecode(millis()));
+    newRow.setString("Trigger", "D3");
+    newRow.setString("Timecode", timeCode);
+    newRow.setString("D3 Time", d3Position);
+    newRow.setString("LX Cue", lxMidiCueList + "/" + lxMidiCueNumber);
+    newRow.setString("D3 Cue", d3CurrentCue);
+    saveTable(debugTable, "data/debug.csv");
   }
 }

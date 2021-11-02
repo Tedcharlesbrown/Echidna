@@ -106,7 +106,12 @@ void controlEvent(ControlEvent theEvent) {
 public void RECORD(boolean theValue) {
 	if (theValue) {
 		startRecord();
+		recording = true;
+		setRecordTime();
+		debugTable.clearRows();
 	} else {
 		stopRecord();
+		recording = false;
+		recordOffset = 0;
 	}
 }

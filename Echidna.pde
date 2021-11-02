@@ -1,5 +1,8 @@
 String clock = "";
 String debug = "";
+boolean recording = false;
+int recordOffset = 0;
+String recordTime = "";
 
 void setup() {
   size(960, 540);
@@ -7,7 +10,7 @@ void setup() {
 
   setupVmix();
 
-  
+
   serverSetup();
   setupMIDI();
   setupOSC();
@@ -44,5 +47,28 @@ void getClock() {
   }
 
   clock = hour + ":" + minute + "." + second;
+}
+
+String millisToTimecode(int input) {
+  if (recording) {
+    input = millis() - recordOffset;
+
+    float frames = input % 59.94;
+    float seconds = (input / 59.94) % 59.94;
+    float minutes = (input / 59.94 / 59.94) % 59.94;
+    float hours = (input / 59.94 / 59.94 / 59.94) % 59.94;
+
+    String output = floor(hours) + ":" + floor(minutes) + ":" + floor(seconds) + ":" + floor(frames);
+
+    return "NOT WORKING";
+  } else {
+    return "NO";
+  }
+
 
 }
+
+void setRecordTime() {
+  recordOffset = millis();
+}
+

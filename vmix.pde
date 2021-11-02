@@ -74,7 +74,7 @@ void triggerScreenshot() {
 
 void startRecord() {
 	GetRequest get = new GetRequest(getPrefix + "StartMultiCorder"); //Start multicorder
-
+	
 	get.send();
 	println("STARTING RECORD");
 }
