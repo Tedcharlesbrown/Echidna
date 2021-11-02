@@ -7,22 +7,19 @@ void setup() {
 
   setupVmix();
 
-  setupGui();
+  
   serverSetup();
   setupMIDI();
   setupOSC();
+  setupGui();
 }
-
-int delay = 0;
-Boolean trigger = false;
-int videoDelay = 150;
 
 void draw() {
   getClock();
   background(0);
 
 
-  screenshot();
+  drawVmix();
 }
 
 void getClock() {
@@ -48,20 +45,4 @@ void getClock() {
 
   clock = hour + ":" + minute + "." + second;
 
-}
-
-
-void screenshot() {
-  // if (!d3OldCurrentCue.equals(d3CurrentCue) || !lxOldMidiCueNumber.equals(lxMidiCueNumber)) {
-  //  delay = millis();
-  //  d3OldCurrentCue = d3CurrentCue;
-  //  lxOldMidiCueNumber = lxMidiCueNumber;
-  //  trigger = true;
-  // } else {
-  //  if (millis() > delay + videoDelay && trigger) {
-  //    saveFrame("data/showfeed.png");
-  //    trigger = false;
-  //    // println("SAVE FRAME");
-  //  }
-  // }
 }

@@ -26,6 +26,10 @@ void serverSetup() {
 
 }
 
+void serverStop() {
+  server.stop();
+}
+
 boolean obsStatus = false;
 
 

@@ -54,29 +54,60 @@ void setupSettings() {
 				PORT_REAPER_IN = value;
 				break;
 			case 3:
+				PORT_VMIX = value;
+				break;
+			case 4:
 				MIDI_INPUT = value;
 				break;
 			}
 		}
 	} catch (Exception e) {
 		settingsOut = createWriter("data/settings.txt");
+
 		settingsOut.print("HTTP PORT: ");
 		settingsOut.println(DEFAULT_PORT_HTTP);
+
 		settingsOut.print("D3 PORT IN: ");
 		settingsOut.println(DEFAULT_PORT_DISGUISE_IN);
+
 		settingsOut.print("REAPER PORT IN: ");
 		settingsOut.println(DEFAULT_PORT_REAPER_IN);
-		// settingsOut.print("EOS PORT IN: ");
-		// settingsOut.println(DEFAULT_PORT_EOS_IN);
-		// settingsOut.println(DEFAULT_IP_EOS_OUT);
-		// settingsOut.println(DEFAULT_PORT_EOS_OUT);
+
+		settingsOut.print("VMIX PORT: ");
+		settingsOut.println(DEFAULT_PORT_VMIX);
+
 		settingsOut.print("MIDI INPUT: ");
 		settingsOut.println(DEFAULT_MIDI_INPUT);
-		// settingsOut.println(DEFAULT_MIDI_OUTPUT);
+
 
 		settingsOut.flush();
 		settingsOut.close();
 	}
 	// printArray(settings);
 
+}
+
+void saveSettings() {
+	println("SAVING SETTINGS");
+	
+	settingsOut = createWriter("data/settings.txt");
+
+	settingsOut.print("HTTP PORT: ");
+	settingsOut.println(PORT_HTTP);
+
+	settingsOut.print("D3 PORT IN: ");
+	settingsOut.println(PORT_DISGUISE_IN);
+
+	settingsOut.print("REAPER PORT IN: ");
+	settingsOut.println(PORT_REAPER_IN);
+
+	settingsOut.print("VMIX PORT: ");
+	settingsOut.println(PORT_VMIX);
+
+	settingsOut.print("MIDI INPUT: ");
+	settingsOut.println(MIDI_INPUT);
+
+
+	settingsOut.flush();
+	settingsOut.close();
 }

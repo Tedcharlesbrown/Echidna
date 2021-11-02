@@ -23,10 +23,14 @@ String lxMidiCueHistory = "";
 int indexStart, indexEnd;
 
 void setupMIDI() {
-	MidiBus.list();
+	// MidiBus.list();
 	// println(MidiBus.availableInputs());
 	// println(MidiBus.availableOutputs());
 	myBus = new MidiBus(this, int(MIDI_INPUT), int(MIDI_OUTPUT));
+}
+
+void closeMIDI() {
+	myBus.close();
 }
 
 
@@ -66,6 +70,7 @@ void parseSYSEX(MidiMessage message) {
 	// println("Cue Number: " + lxMidiCueNumber);
 	if (lxMidiCueList.equals("1") && lxMidiCueNumber.indexOf("[") == -1) {
 		lxMidiList1CueNumber = lxMidiCueNumber;
+		updateVmix();
 	}
 	lxDebug();
 	lxMidiCommandData = ""; //Reset Command

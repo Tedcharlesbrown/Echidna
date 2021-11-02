@@ -12,6 +12,11 @@ void setupOSC() {
 	// eosOut = new NetAddress(IP_EOS_OUT, int(PORT_EOS_OUT));
 }
 
+void stopOSC() {
+	disguiseIn.stop();
+	reaperIn.stop();
+}
+
 /* incoming osc message are forwarded to the oscEvent method. */
 void oscEvent(OscMessage theOscMessage) {
 	String address = theOscMessage.addrPattern();
