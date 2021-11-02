@@ -5,6 +5,8 @@ void setup() {
   size(960, 540);
   setupSettings();
 
+  setupVmix();
+
   setupGui();
   serverSetup();
   setupMIDI();

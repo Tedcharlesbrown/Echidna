@@ -15,6 +15,16 @@ void setupGui() {
 	.setAutoClear(false)
 	;
 
+	cp5.addTextfield("VMIX PORT")
+	.setValue(PORT_HTTP)
+	.setPosition(20, 200)
+	.setSize(100, 40)
+	.setFont(createFont("arial",20))
+	.setFocus(false)
+	.setColor(color(255, 0, 0))
+	.setAutoClear(false)
+	;
+
 	cp5.addTextfield("DISGUISE IN PORT")
 	.setValue(PORT_DISGUISE_IN)
 	.setPosition(220, 20)
