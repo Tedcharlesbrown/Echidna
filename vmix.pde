@@ -10,7 +10,7 @@ void setupVmix() {
 	// GetRequest get = new GetRequest(getPrefix); //Check connection
 
 	GetRequest get = new GetRequest(getPrefix + "ActivatorRefresh"); //Check connection
-
+	get.send();
 }
 
 

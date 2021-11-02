@@ -4,6 +4,7 @@ import processing.event.*;
 import processing.opengl.*; 
 
 import controlP5.*; 
+import java.util.*; 
 import http.*; 
 import themidibus.*; 
 import javax.sound.midi.MidiMessage; 
@@ -11,6 +12,7 @@ import javax.sound.midi.SysexMessage;
 import javax.sound.midi.ShortMessage; 
 import netP5.*; 
 import oscP5.*; 
+import http.requests.*; 
 
 import java.util.HashMap; 
 import java.util.ArrayList; 
@@ -21,31 +23,33 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
-public class D3CueBud extends PApplet {
+public class Echidna extends PApplet {
 
 String clock = "";
 String debug = "";
+boolean recording = false;
+int recordOffset = 0;
+String recordTime = "";
 
 public void setup() {
   
   setupSettings();
 
-  setupGui();
+  // setupVmix();
+
+
   serverSetup();
   setupMIDI();
   setupOSC();
+  setupGui();
 }
-
-int delay = 0;
-Boolean trigger = false;
-int videoDelay = 150;
 
 public void draw() {
   getClock();
   background(0);
 
 
-  screenshot();
+  // drawVmix();
 }
 
 public void getClock() {
@@ -71,23 +75,32 @@ public void getClock() {
 
   clock = hour + ":" + minute + "." + second;
 
+  println(millisToTimecode());
 }
 
+public String millisToTimecode() {
+  if (recording) {
+    float input = ((millis() / 1000) * 59.94f) - ((recordOffset / 1000) * 59.94f);
 
-public void screenshot() {
-  // if (!d3OldCurrentCue.equals(d3CurrentCue) || !lxOldMidiCueNumber.equals(lxMidiCueNumber)) {
-  //  delay = millis();
-  //  d3OldCurrentCue = d3CurrentCue;
-  //  lxOldMidiCueNumber = lxMidiCueNumber;
-  //  trigger = true;
-  // } else {
-  //  if (millis() > delay + videoDelay && trigger) {
-  //    saveFrame("data/showfeed.png");
-  //    trigger = false;
-  //    // println("SAVE FRAME");
-  //  }
-  // }
+    float frames = input % 59.94f;
+    float seconds = (input / 59.94f) % 59.94f;
+    float minutes = (input / 59.94f / 59.94f) % 59.94f;
+    float hours = (input / 59.94f / 59.94f / 59.94f) % 59.94f;
+
+    String output = floor(hours) + ":" + floor(minutes) + ":" + floor(seconds) + ":" + floor(frames);
+
+    return output;
+  } else {
+    return "NO";
+  }
+
+
 }
+
+public void setRecordTime() {
+  recordOffset = millis();
+}
+
 String d3Address = "/d3/showcontrol/";
 
 String d3HeartAddress = d3Address + "heartbeat";
@@ -192,7 +205,7 @@ public void parseD3Hint(String value) {
       goto next d3Cue
     }
   }
-  
+
   if (lxCurrentCue < curentTrigger && currentTriggerType.equals(CUE)) {
    while (lxCurrentCue < currentTrigger) {
       goto lxCurrentCue--
@@ -214,6 +227,16 @@ public void d3Debug() {
     debug += ",";
 
     d3OldCurrentCue = d3CurrentCue;
+
+    TableRow newRow = debugTable.addRow();
+    newRow.setString("Time", clock);
+    newRow.setString("RecordTime", millisToTimecode());
+    newRow.setString("Trigger", "D3");
+    newRow.setString("Timecode", timeCode);
+    newRow.setString("D3 Time", d3Position);
+    newRow.setString("LX Cue", lxMidiCueList + "/" + lxMidiCueNumber);
+    newRow.setString("D3 Cue", d3CurrentCue);
+    saveTable(debugTable, "data/debug.csv");
   }
 }
 String eosActiveCue = "/eos/out/";
@@ -275,6 +298,7 @@ public StringList eosCueParse(String argument) {
 }
 
 
+
 ControlP5 cp5;
 
 public void setupGui() {
@@ -284,56 +308,111 @@ public void setupGui() {
 	.setValue(PORT_HTTP)
 	.setPosition(20, 20)
 	.setSize(100, 40)
-	.setFont(createFont("arial",20))
+	.setFont(createFont("arial", 20))
 	.setFocus(false)
 	.setColor(color(255, 0, 0))
 	.setAutoClear(false)
 	;
 
-	cp5.addTextfield("DISGUISE IN PORT")
+	cp5.addTextfield("DISGUISE PORT")
 	.setValue(PORT_DISGUISE_IN)
 	.setPosition(220, 20)
 	.setSize(100, 40)
-	.setFont(createFont("arial",20))
+	.setFont(createFont("arial", 20))
 	.setFocus(false)
 	.setColor(color(255, 0, 0))
 	.setAutoClear(false)
 	;
 
-	cp5.addTextfield("REAPER IN PORT")
+	cp5.addTextfield("REAPER PORT")
 	.setValue(PORT_REAPER_IN)
 	.setPosition(420, 20)
 	.setSize(100, 40)
-	.setFont(createFont("arial",20))
+	.setFont(createFont("arial", 20))
 	.setFocus(false)
 	.setColor(color(255, 0, 0))
 	.setAutoClear(false)
 	;
 
-	cp5.addTextfield("MIDI IN PORT")
-	.setValue(MIDI_INPUT)
-	.setPosition(620, 20)
+	cp5.addTextfield("VMIX PORT")
+	.setValue(PORT_VMIX)
+	.setPosition(20, 200)
 	.setSize(100, 40)
-	.setFont(createFont("arial",20))
+	.setFont(createFont("arial", 20))
 	.setFocus(false)
 	.setColor(color(255, 0, 0))
 	.setAutoClear(false)
+	;
+
+	cp5.addButton("RECORD")
+	.setValue(0)
+	.setPosition(400, 400)
+	.setFont(createFont("arial", 20))
+	.setSize(150, 50)
+	.setSwitch(true)
+	;
+
+	List l = Arrays.asList(MidiBus.availableInputs());
+
+	cp5.addScrollableList("dropdown")
+	.setLabel("MIDI IN PORT")
+	.setPosition(620, 20)
+	.setSize(250, 400)
+	.setFont(createFont("arial", 17))
+	.setBarHeight(40)
+	.setItemHeight(40)
+	.addItems(l)
+	.setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+	.setValue(PApplet.parseInt(MIDI_INPUT))
 	;
 }
 
-// void controlEvent(ControlEvent theEvent) {
-//   if(theEvent.isAssignableFrom(Textfield.class)) {
-//     println("controlEvent: accessing a string from controller '"
-//             +theEvent.getName()+"': "
-//             +theEvent.getStringValue()
-//             );
-//   }
-// }
+public void dropdown(int n) { //get dropdown value
+	MIDI_INPUT = str(n);
+	closeMIDI();
+	setupMIDI();
+	println("MIDI IN PORT SET TO: " + n);
+	saveSettings();
+}
 
-// public void input(String theText) {
-//   // automatically receives results from controller input
-//   println("a textfield event for controller 'input' : "+theText);
-// }
+public void controlEvent(ControlEvent theEvent) {
+	if (theEvent.isAssignableFrom(Textfield.class)) {
+		if (theEvent.getName().equals("HTTP PORT")) {
+			PORT_HTTP = theEvent.getStringValue();
+			serverStop();
+			serverSetup();
+			println("HTTP PORT SET TO: " + theEvent.getStringValue());
+		} else if (theEvent.getName().equals("DISGUISE PORT")) {
+			PORT_DISGUISE_IN = theEvent.getStringValue();
+			stopOSC();
+			setupOSC();
+			println("DISGUISE PORT SET TO: " + theEvent.getStringValue());
+		} else if (theEvent.getName().equals("REAPER PORT")) {
+			PORT_REAPER_IN = theEvent.getStringValue();
+			stopOSC();
+			setupOSC();
+			println("REAPER PORT SET TO: " + theEvent.getStringValue());
+		} else if (theEvent.getName().equals("VMIX PORT")) {
+			PORT_VMIX = theEvent.getStringValue();
+			setupVmix();
+			println("VMIX PORT SET TO: " + theEvent.getStringValue());
+		}
+		saveSettings();
+	} 
+}
+
+public void RECORD(boolean theValue) {
+	if (theValue) {
+		startRecord();
+		recording = true;
+		setRecordTime();
+		debugTable.clearRows();
+	} else {
+		stopRecord();
+		recording = false;
+		recordOffset = 0;
+	}
+}
 
 
 SimpleHTTPServer server;
@@ -360,6 +439,10 @@ public void serverSetup() {
 
   }
 
+}
+
+public void serverStop() {
+  server.stop();
 }
 
 boolean obsStatus = false;
@@ -427,10 +510,14 @@ String lxMidiCueHistory = "";
 int indexStart, indexEnd;
 
 public void setupMIDI() {
-	MidiBus.list();
+	// MidiBus.list();
 	// println(MidiBus.availableInputs());
 	// println(MidiBus.availableOutputs());
 	myBus = new MidiBus(this, PApplet.parseInt(MIDI_INPUT), PApplet.parseInt(MIDI_OUTPUT));
+}
+
+public void closeMIDI() {
+	myBus.close();
 }
 
 
@@ -470,6 +557,7 @@ public void parseSYSEX(MidiMessage message) {
 	// println("Cue Number: " + lxMidiCueNumber);
 	if (lxMidiCueList.equals("1") && lxMidiCueNumber.indexOf("[") == -1) {
 		lxMidiList1CueNumber = lxMidiCueNumber;
+		updateVmix();
 	}
 	lxDebug();
 	lxMidiCommandData = ""; //Reset Command
@@ -492,6 +580,16 @@ public void lxDebug() {
 	debug += "</lx>";
 	debug += "</debug>";
 	debug += ",";
+
+	TableRow newRow = debugTable.addRow();
+	newRow.setString("Time",clock);
+	newRow.setString("RecordTime",millisToTimecode());
+	newRow.setString("Trigger","LX");
+	newRow.setString("Timecode", timeCode);
+	newRow.setString("D3 Time", d3Position);
+	newRow.setString("LX Cue", lxMidiCueList + "/" + lxMidiCueNumber);
+	newRow.setString("D3 Cue", d3CurrentCue);
+	saveTable(debugTable,"data/debug.csv");
 }
 
 public void parseLXCue(String m) {
@@ -545,6 +643,11 @@ public void setupOSC() {
 	// eosOut = new NetAddress(IP_EOS_OUT, int(PORT_EOS_OUT));
 }
 
+public void stopOSC() {
+	disguiseIn.stop();
+	reaperIn.stop();
+}
+
 /* incoming osc message are forwarded to the oscEvent method. */
 public void oscEvent(OscMessage theOscMessage) {
 	String address = theOscMessage.addrPattern();
@@ -572,12 +675,16 @@ String DEFAULT_PORT_EOS_IN = "4444";
 String DEFAULT_IP_EOS_OUT = "192.168.1.202";
 String DEFAULT_PORT_EOS_OUT = "3333";
 
+String DEFAULT_PORT_VMIX = "8088";
+
 String DEFAULT_MIDI_INPUT = "0";
 String DEFAULT_MIDI_OUTPUT = "-1";
 
+Table debugTable;
+
 //---
 
-String PORT_HTTP, PORT_DISGUISE_IN, PORT_REAPER_IN, PORT_EOS_IN, IP_EOS_OUT, PORT_EOS_OUT, MIDI_INPUT, MIDI_OUTPUT;
+String PORT_HTTP, PORT_DISGUISE_IN, PORT_REAPER_IN, PORT_EOS_IN, IP_EOS_OUT, PORT_EOS_OUT, PORT_VMIX, MIDI_INPUT, MIDI_OUTPUT;
 
 public void defaultSettings() {
 	PORT_HTTP = DEFAULT_PORT_HTTP;
@@ -588,6 +695,8 @@ public void defaultSettings() {
 	IP_EOS_OUT = DEFAULT_IP_EOS_OUT;
 	PORT_EOS_OUT = DEFAULT_PORT_EOS_OUT;
 
+	PORT_VMIX = DEFAULT_PORT_VMIX;
+
 	MIDI_INPUT = DEFAULT_MIDI_INPUT;
 	MIDI_OUTPUT = DEFAULT_MIDI_OUTPUT;
 }
@@ -597,6 +706,16 @@ public void defaultSettings() {
 PrintWriter settingsOut;
 
 public void setupSettings() {
+	debugTable = new Table();
+	debugTable.addColumn("Time");
+	debugTable.addColumn("RecordTime");
+	debugTable.addColumn("Trigger");
+	debugTable.addColumn("Timecode");
+	debugTable.addColumn("D3 Time");
+	debugTable.addColumn("LX Cue");
+	debugTable.addColumn("D3 Cue");
+	saveTable(debugTable,"data/debug.csv");
+
 	defaultSettings();
 	String[] settings = loadStrings("data/settings.txt");
 	try {
@@ -616,25 +735,31 @@ public void setupSettings() {
 				PORT_REAPER_IN = value;
 				break;
 			case 3:
+				PORT_VMIX = value;
+				break;
+			case 4:
 				MIDI_INPUT = value;
 				break;
 			}
 		}
 	} catch (Exception e) {
 		settingsOut = createWriter("data/settings.txt");
+
 		settingsOut.print("HTTP PORT: ");
 		settingsOut.println(DEFAULT_PORT_HTTP);
+
 		settingsOut.print("D3 PORT IN: ");
 		settingsOut.println(DEFAULT_PORT_DISGUISE_IN);
+
 		settingsOut.print("REAPER PORT IN: ");
 		settingsOut.println(DEFAULT_PORT_REAPER_IN);
-		// settingsOut.print("EOS PORT IN: ");
-		// settingsOut.println(DEFAULT_PORT_EOS_IN);
-		// settingsOut.println(DEFAULT_IP_EOS_OUT);
-		// settingsOut.println(DEFAULT_PORT_EOS_OUT);
+
+		settingsOut.print("VMIX PORT: ");
+		settingsOut.println(DEFAULT_PORT_VMIX);
+
 		settingsOut.print("MIDI INPUT: ");
 		settingsOut.println(DEFAULT_MIDI_INPUT);
-		// settingsOut.println(DEFAULT_MIDI_OUTPUT);
+
 
 		settingsOut.flush();
 		settingsOut.close();
@@ -642,9 +767,126 @@ public void setupSettings() {
 	// printArray(settings);
 
 }
+
+public void saveSettings() {
+	println("SAVING SETTINGS");
+
+	settingsOut = createWriter("data/settings.txt");
+
+	settingsOut.print("HTTP PORT: ");
+	settingsOut.println(PORT_HTTP);
+
+	settingsOut.print("D3 PORT IN: ");
+	settingsOut.println(PORT_DISGUISE_IN);
+
+	settingsOut.print("REAPER PORT IN: ");
+	settingsOut.println(PORT_REAPER_IN);
+
+	settingsOut.print("VMIX PORT: ");
+	settingsOut.println(PORT_VMIX);
+
+	settingsOut.print("MIDI INPUT: ");
+	settingsOut.println(MIDI_INPUT);
+
+
+	settingsOut.flush();
+	settingsOut.close();
+}
+
+
+String getIP = "http://127.0.0.1:";
+String getFunction = "/api/?Function=";
+String getPrefix = "";
+
+public void setupVmix() {
+	getPrefix = trim(getIP + PORT_VMIX + getFunction);
+
+	// GetRequest get = new GetRequest(getPrefix); //Check connection
+
+	GetRequest get = new GetRequest(getPrefix + "ActivatorRefresh"); //Check connection
+	get.send();
+}
+
+
+public void updateVmix() {
+	GetRequest get = new GetRequest(getPrefix + "SetText&Input=LXCue&SelectedName=Message&Value=" + lxMidiList1CueNumber); //LX CUE
+	get.send();
+
+	get = new GetRequest(getPrefix + "SetText&Input=D3Time&SelectedName=Message&Value=" + d3Position); // D3 Timeline
+	get.send();
+
+	get = new GetRequest(getPrefix + "SetText&Input=D3Cue&SelectedName=Message&Value=" + d3CurrentCue.replace(' ', '_')); // D3 Current Cue
+	get.send();
+
+	get = new GetRequest(getPrefix + "SetText&Input=D3Next&SelectedName=Message&Value=" + d3NextCue.replace(' ', '_')); // D3 Next Cue
+	get.send();
+
+	get = new GetRequest(getPrefix + "SetText&Input=D3Trigger&SelectedName=Message&Value=" + d3NextTriggerType + ":" + d3NextTrigger); // D3 Next Trigger
+	get.send();
+
+	get = new GetRequest(getPrefix + "SetText&Input=timeCode&SelectedName=Message&Value=" + timeCode); // D3 Next Trigger
+	get.send();
+	// println(get.getContent());
+}
+
+int delay = 0;
+Boolean trigger = false;
+int videoDelay = 150;
+
+public void drawVmix() {
+	updateVmix();
+	if (!d3OldCurrentCue.equals(d3CurrentCue) || !lxOldMidiCueNumber.equals(lxMidiCueNumber)) {
+		delay = millis();
+		d3OldCurrentCue = d3CurrentCue;
+		lxOldMidiCueNumber = lxMidiCueNumber;
+		trigger = true;
+	} else {
+		if (millis() > delay + videoDelay && trigger) {
+			triggerScreenshot();
+			trigger = false;
+		}
+	}
+}
+
+public void triggerScreenshot() {
+	GetRequest get = new GetRequest(getPrefix + "KeyPress&Value=F1"); // Screenshot Stage Feed - Web Browser
+	get.send();
+	delay(100);
+	get = new GetRequest(getPrefix + "KeyPress&Value=F2"); // Screenshot Multiview - Web Browser
+	get.send();
+	delay(100);
+	get = new GetRequest(getPrefix + "KeyPress&Value=F3"); // Screenshot Stage Feed - Archive
+	get.send();
+	delay(100);
+	get = new GetRequest(getPrefix + "KeyPress&Value=F4"); // Screenshot Multiview - Archive
+	get.send();
+
+	println(get.getContent());
+
+	println("SCREENSHOT");
+}
+
+public void startRecord() {
+	GetRequest get = new GetRequest(getPrefix + "StartMultiCorder"); //Start multicorder
+	
+	get.send();
+	println("STARTING RECORD");
+}
+
+public void stopRecord() {
+	GetRequest get = new GetRequest(getPrefix + "StopMultiCorder"); //Stop multicorder
+
+	get.send();
+	println(get.getContent());
+	println("STOPPING RECORD");
+}
+
+
+
+
   public void settings() {  size(960, 540); }
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "D3CueBud" };
+    String[] appletArgs = new String[] { "Echidna" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {

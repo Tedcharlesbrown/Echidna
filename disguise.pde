@@ -127,7 +127,7 @@ void d3Debug() {
 
     TableRow newRow = debugTable.addRow();
     newRow.setString("Time", clock);
-    newRow.setString("RecordTime", millisToTimecode(millis()));
+    newRow.setString("RecordTime", millisToTimecode());
     newRow.setString("Trigger", "D3");
     newRow.setString("Timecode", timeCode);
     newRow.setString("D3 Time", d3Position);

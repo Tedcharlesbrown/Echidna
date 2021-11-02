@@ -49,9 +49,9 @@ void getClock() {
   clock = hour + ":" + minute + "." + second;
 }
 
-String millisToTimecode(int input) {
+String millisToTimecode() {
   if (recording) {
-    input = millis() - recordOffset;
+    float input = ((millis() / 1000) * 59.94) - ((recordOffset / 1000) * 59.94);
 
     float frames = input % 59.94;
     float seconds = (input / 59.94) % 59.94;
@@ -60,7 +60,7 @@ String millisToTimecode(int input) {
 
     String output = floor(hours) + ":" + floor(minutes) + ":" + floor(seconds) + ":" + floor(frames);
 
-    return "NOT WORKING";
+    return output;
   } else {
     return "NO";
   }

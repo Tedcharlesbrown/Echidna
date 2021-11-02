@@ -96,7 +96,7 @@ void lxDebug() {
 
 	TableRow newRow = debugTable.addRow();
 	newRow.setString("Time",clock);
-	newRow.setString("RecordTime",millisToTimecode(millis()));
+	newRow.setString("RecordTime",millisToTimecode());
 	newRow.setString("Trigger","LX");
 	newRow.setString("Timecode", timeCode);
 	newRow.setString("D3 Time", d3Position);
