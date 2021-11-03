@@ -134,5 +134,7 @@ void d3Debug() {
     newRow.setString("LX Cue", lxMidiCueList + "/" + lxMidiCueNumber);
     newRow.setString("D3 Cue", d3CurrentCue);
     saveTable(debugTable, "data/debug.csv");
+
+    consoleLog(clock + ":" + "D3:" + d3CurrentCue);
   }
 }

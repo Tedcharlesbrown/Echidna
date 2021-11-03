@@ -20,8 +20,10 @@ void serverSetup() {
 
     server.serve("showfeed.png");
     server.serve("multiview.png");
-  } catch (Exception e) {
 
+    consoleLog("SERVER RUNNING ON PORT: " + PORT_HTTP);
+  } catch (Exception e) {
+    consoleLog("COULD NOT START WEB SERVER");
   }
 
 }

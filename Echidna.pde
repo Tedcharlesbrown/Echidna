@@ -16,7 +16,6 @@ void setup() {
   setupSettings();
 
   setupVmix();
-
   serverSetup();
   setupMIDI();
   setupOSC();
@@ -38,7 +37,7 @@ void draw() {
 
   getClock();
 
-  drawVmix();
+  updateVmix();
   drawConsole();
 }
 

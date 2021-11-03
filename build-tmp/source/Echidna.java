@@ -3,10 +3,9 @@ import processing.data.*;
 import processing.event.*; 
 import processing.opengl.*; 
 
-import java.io.ByteArrayOutputStream; 
-import java.io.PrintStream; 
 import controlP5.*; 
 import java.util.*; 
+import java.net.*; 
 import http.*; 
 import themidibus.*; 
 import javax.sound.midi.MidiMessage; 
@@ -27,9 +26,6 @@ import java.io.IOException;
 
 public class Echidna extends PApplet {
 
-
-
-
 String clock = "";
 String debug = "";
 boolean recording = false;
@@ -47,11 +43,10 @@ public void setup() {
 
   setupSettings();
 
-  // setupVmix();
-
-  // serverSetup();
-  // setupMIDI();
-  // setupOSC();
+  setupVmix();
+  serverSetup();
+  setupMIDI();
+  setupOSC();
   setupGui();
 
   loaded = true;
@@ -70,9 +65,8 @@ public void draw() {
 
   getClock();
 
-  // drawVmix();
+  updateVmix();
   drawConsole();
-  test();
 }
 
 public void getClock() {
@@ -120,22 +114,6 @@ public String millisToTimecode() {
 
 public void setRecordTime() {
   recordOffset = millis();
-}
-
-public void test() {
-  ByteArrayOutputStream baos = new ByteArrayOutputStream();
-PrintStream ps = new PrintStream(baos);
-// IMPORTANT: Save the old System.out!
-  PrintStream old = System.out;
-// Tell Java to use your special stream
-  System.setOut(ps);
-// Print some output: goes to your special stream
-  System.out.println("Foofoofoo!");
-// Put things back
-  System.out.flush();
-  System.setOut(old);
-// Show what happened
-  System.out.println("Here: " + baos.toString());
 }
 String d3Address = "/d3/showcontrol/";
 
@@ -273,6 +251,8 @@ public void d3Debug() {
     newRow.setString("LX Cue", lxMidiCueList + "/" + lxMidiCueNumber);
     newRow.setString("D3 Cue", d3CurrentCue);
     saveTable(debugTable, "data/debug.csv");
+
+    consoleLog(clock + ":" + "D3:" + d3CurrentCue);
   }
 }
 String eosActiveCue = "/eos/out/";
@@ -335,8 +315,9 @@ public StringList eosCueParse(String argument) {
 
 
 
+
 ControlP5 cp5;
-String console = "CONSOLE";
+String console = "";
 
 public void setupGui() {
 	cp5 = new ControlP5(this);
@@ -496,6 +477,16 @@ public void RECORD(boolean theValue) {
 	}
 }
 
+public static boolean pingHost(String host, int port, int timeout) {
+	try {
+		Socket socket = new Socket();
+		socket.connect(new InetSocketAddress(host, port), timeout);
+		return true;
+	} catch (IOException e) {
+		return false; // Either timeout or unreachable or failed DNS lookup.
+	}
+}
+
 
 SimpleHTTPServer server;
 
@@ -517,8 +508,10 @@ public void serverSetup() {
 
     server.serve("showfeed.png");
     server.serve("multiview.png");
-  } catch (Exception e) {
 
+    consoleLog("SERVER RUNNING ON PORT: " + PORT_HTTP);
+  } catch (Exception e) {
+    consoleLog("COULD NOT START WEB SERVER");
   }
 
 }
@@ -672,6 +665,8 @@ public void lxDebug() {
 	newRow.setString("LX Cue", lxMidiCueList + "/" + lxMidiCueNumber);
 	newRow.setString("D3 Cue", d3CurrentCue);
 	saveTable(debugTable,"data/debug.csv");
+
+	consoleLog(clock + ":" + "LX:" + lxMidiCueList + "/" + lxMidiCueNumber);
 }
 
 public void parseLXCue(String m) {
@@ -880,42 +875,55 @@ String getIP = "http://127.0.0.1:";
 String getFunction = "/api/?Function=";
 String getPrefix = "";
 
+boolean vMixAvailable = false;
+
 public void setupVmix() {
 	getPrefix = trim(getIP + PORT_VMIX + getFunction);
 
-	// GetRequest get = new GetRequest(getPrefix); //Check connection
+	if (pingHost("127.0.0.1", PApplet.parseInt(PORT_VMIX), 1000)) {
+		GetRequest get = new GetRequest(getPrefix + "ActivatorRefresh"); //Check connection
+		get.send();
 
-	GetRequest get = new GetRequest(getPrefix + "ActivatorRefresh"); //Check connection
-	get.send();
+		println(get.getContent());
+
+		vMixAvailable = true;
+		consoleLog("CONNECTED TO VMIX!");
+	} else {
+		vMixAvailable = false;
+		consoleLog("COULD NOT CONNECT TO VMIX");
+	}
 }
 
 
 public void updateVmix() {
-	GetRequest get = new GetRequest(getPrefix + "SetText&Input=LXCue&SelectedName=Message&Value=" + lxMidiList1CueNumber); //LX CUE
-	get.send();
+	if (vMixAvailable) {
+		screenshot();
 
-	get = new GetRequest(getPrefix + "SetText&Input=D3Time&SelectedName=Message&Value=" + d3Position); // D3 Timeline
-	get.send();
+		GetRequest get = new GetRequest(getPrefix + "SetText&Input=LXCue&SelectedName=Message&Value=" + lxMidiList1CueNumber); //LX CUE
+		get.send();
 
-	get = new GetRequest(getPrefix + "SetText&Input=D3Cue&SelectedName=Message&Value=" + d3CurrentCue.replace(' ', '_')); // D3 Current Cue
-	get.send();
+		get = new GetRequest(getPrefix + "SetText&Input=D3Time&SelectedName=Message&Value=" + d3Position); // D3 Timeline
+		get.send();
 
-	get = new GetRequest(getPrefix + "SetText&Input=D3Next&SelectedName=Message&Value=" + d3NextCue.replace(' ', '_')); // D3 Next Cue
-	get.send();
+		get = new GetRequest(getPrefix + "SetText&Input=D3Cue&SelectedName=Message&Value=" + d3CurrentCue.replace(' ', '_')); // D3 Current Cue
+		get.send();
 
-	get = new GetRequest(getPrefix + "SetText&Input=D3Trigger&SelectedName=Message&Value=" + d3NextTriggerType + ":" + d3NextTrigger); // D3 Next Trigger
-	get.send();
+		get = new GetRequest(getPrefix + "SetText&Input=D3Next&SelectedName=Message&Value=" + d3NextCue.replace(' ', '_')); // D3 Next Cue
+		get.send();
 
-	get = new GetRequest(getPrefix + "SetText&Input=timeCode&SelectedName=Message&Value=" + timeCode); // D3 Next Trigger
-	get.send();
+		get = new GetRequest(getPrefix + "SetText&Input=D3Trigger&SelectedName=Message&Value=" + d3NextTriggerType + ":" + d3NextTrigger); // D3 Next Trigger
+		get.send();
+
+		get = new GetRequest(getPrefix + "SetText&Input=timeCode&SelectedName=Message&Value=" + timeCode); // D3 Next Trigger
+		get.send();
+	}
 }
 
 int delay = 0;
 Boolean trigger = false;
 int videoDelay = 150;
 
-public void drawVmix() {
-	updateVmix();
+public void screenshot() {
 	if (!d3OldCurrentCue.equals(d3CurrentCue) || !lxOldMidiCueNumber.equals(lxMidiCueNumber)) {
 		delay = millis();
 		d3OldCurrentCue = d3CurrentCue;
@@ -944,25 +952,31 @@ public void triggerScreenshot() {
 	get = new GetRequest(getPrefix + "KeyPress&Value=F4"); // Screenshot Multiview - Archive
 	get.send();
 
-	println(get.getContent());
+	// println(get.getContent());
 
 	println("SCREENSHOT");
 }
 
 public void startRecord() {
-	GetRequest get = new GetRequest(getPrefix + "StartMultiCorder"); //Start multicorder
-
-	get.send();
-	consoleLog("STARTING RECORD");
+	if (vMixAvailable) {
+		GetRequest get = new GetRequest(getPrefix + "StartMultiCorder"); //Start multicorder
+		get.send();
+		consoleLog("STARTING RECORD");
+	} else {
+		consoleLog("PLEASE CHECK VMIX CONNECTION");
+	}
 }
 
 public void stopRecord() {
-	GetRequest get = new GetRequest(getPrefix + "StopMultiCorder"); //Stop multicorder
-
-	get.send();
-	println(get.getContent());
-	if (loaded) { //prevent early logging
-		consoleLog("STOPPING RECORD");
+	if (vMixAvailable) {
+		GetRequest get = new GetRequest(getPrefix + "StopMultiCorder"); //Stop multicorder
+		get.send();
+		println(get.getContent());
+		if (loaded) { //prevent early logging
+			consoleLog("STOPPING RECORD");
+		}
+	} else {
+		consoleLog("PLEASE CHECK VMIX CONNECTION");
 	}
 }
 

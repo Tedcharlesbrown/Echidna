@@ -1,8 +1,9 @@
 import controlP5.*;
 import java.util.*;
+import java.net.*;
 
 ControlP5 cp5;
-String console = "CONSOLE";
+String console = "";
 
 void setupGui() {
 	cp5 = new ControlP5(this);
@@ -159,5 +160,15 @@ public void RECORD(boolean theValue) {
 		stopRecord();
 		recording = false;
 		recordOffset = 0;
+	}
+}
+
+public static boolean pingHost(String host, int port, int timeout) {
+	try {
+		Socket socket = new Socket();
+		socket.connect(new InetSocketAddress(host, port), timeout);
+		return true;
+	} catch (IOException e) {
+		return false; // Either timeout or unreachable or failed DNS lookup.
 	}
 }
