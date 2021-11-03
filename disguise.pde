@@ -79,12 +79,21 @@ void parseD3Hint(String value) {
   int indexStart;
   int indexEnd;
 
-  // if (value.indexOf("+") > value.indexOf("CUE")) {
-  //   indexStart = value.indexOf("CUE");
-  //   indexEnd = value.indexOf("|");
+  value = value.trim();
 
-  //   d3CurrentTrigger = value.indexOf(indexStart + 4, indexEnd).trim();
-  // }
+  indexStart = value.indexOf(" ");
+  indexEnd = value.indexOf("|");
+
+  d3CurrentTriggerType = value.substring(0, indexStart).trim();
+
+  if (indexEnd != -1) {
+    d3CurrentTrigger = value.substring(indexStart, indexEnd).trim();
+  } else {
+    indexEnd = value.indexOf("+");
+    d3CurrentTrigger = value.substring(indexStart, indexEnd).trim();
+  }
+
+  //------------------------
 
   indexStart = value.indexOf("+");
   value = value.substring(indexStart + 12).trim();
@@ -93,22 +102,38 @@ void parseD3Hint(String value) {
   indexEnd = value.indexOf("|");
 
   d3NextTriggerType = value.substring(0, indexStart).trim();
-  d3NextTrigger = value.substring(indexStart, indexEnd).trim();
+
+  if (indexEnd != -1) {
+    d3NextTrigger = value.substring(indexStart, indexEnd).trim();
+  } else {
+    indexEnd = value.indexOf("-");
+    d3NextTrigger = value.substring(indexStart, indexEnd).trim();
+  }
 }
 
-/*void outofordersync() {
-  if (lxCurrentCue > nextTrigger && nextTriggerType.equals(CUE)) {
-    while (lxCurrentCue > nextTrigger) {
-      goto next d3Cue
-    }
-  }
+void mousePressed() {
+  lxMidiList1CueNumber = "1";
+  println(int(lxMidiList1CueNumber) < int(d3CurrentTrigger),lxMidiList1CueNumber,d3CurrentTrigger);
+}
 
-  if (lxCurrentCue < curentTrigger && currentTriggerType.equals(CUE)) {
-   while (lxCurrentCue < currentTrigger) {
-      goto lxCurrentCue--
-    }
+void outofordersync() {
+  if (int(lxMidiList1CueNumber) > int(d3CurrentTrigger) && d3NextTriggerType.equals("CUE")) {
+    OscMessage myMessage = new OscMessage("/d3/showcontrol/cue");
+    myMessage.add(int(d3NextTrigger));
+    disguiseIn.send(myMessage, disguiseOut);
+    println("MOVING FORWARD",lxMidiList1CueNumber,d3CurrentTrigger);
   }
-}*/
+  if (int(lxMidiList1CueNumber) < int(d3CurrentTrigger)) {
+    int decrement = int(d3CurrentTrigger) - 1;
+    while (int(lxMidiList1CueNumber) < int(d3CurrentTrigger)) {
+      OscMessage myMessage = new OscMessage("/d3/showcontrol/cue");
+      myMessage.add(decrement);
+      disguiseIn.send(myMessage, disguiseOut);
+      decrement--;
+    }
+    println("MOVING BACKWARD");
+  }
+}
 
 void d3Debug() {
   if (!d3CurrentCue.equals(d3OldCurrentCue)) {
@@ -118,7 +143,7 @@ void d3Debug() {
     debug += d3CurrentCue;
     debug += "   |   " + "<debug>";
     debug += "Position: " + d3Hint + ";";
-    debug += " Next Trigger: " + d3NextTrigger;
+    debug += " Next Trigger: " + d3NextTriggerType + ":" + d3NextTrigger;
     debug += "</d3>";
     debug += "</debug>";
     debug += ",";
@@ -132,9 +157,9 @@ void d3Debug() {
     newRow.setString("Timecode", timeCode);
     newRow.setString("D3 Time", d3Position);
     newRow.setString("LX Cue", lxMidiCueList + "/" + lxMidiCueNumber);
-    newRow.setString("D3 Cue", d3CurrentCue);
-    saveTable(debugTable, "data/debug.csv");
+    newRow.setString("D3 Cue", d3NextTriggerType + ":" + d3NextTrigger);
+    saveTable(debugTable, debugPath);
 
-    consoleLog(clock + ":" + "D3:" + d3CurrentCue);
+    // consoleLog(clock + ":" + "D3:" + d3CurrentCue);
   }
 }

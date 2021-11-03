@@ -12,6 +12,7 @@ String DEFAULT_MIDI_INPUT = "0";
 String DEFAULT_MIDI_OUTPUT = "-1";
 
 Table debugTable;
+String debugPath = "C:/Users/Rkdns/Desktop/ShowDocumentation/debug.csv";
 
 //---
 
@@ -45,7 +46,7 @@ void setupSettings() {
 	debugTable.addColumn("D3 Time");
 	debugTable.addColumn("LX Cue");
 	debugTable.addColumn("D3 Cue");
-	saveTable(debugTable,"data/debug.csv");
+	saveTable(debugTable,debugPath);
 
 	defaultSettings();
 	String[] settings = loadStrings("data/settings.txt");

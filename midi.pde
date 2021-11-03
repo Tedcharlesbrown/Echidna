@@ -102,9 +102,9 @@ void lxDebug() {
 	newRow.setString("D3 Time", d3Position);
 	newRow.setString("LX Cue", lxMidiCueList + "/" + lxMidiCueNumber);
 	newRow.setString("D3 Cue", d3CurrentCue);
-	saveTable(debugTable,"data/debug.csv");
+	saveTable(debugTable,debugPath);
 
-	consoleLog(clock + ":" + "LX:" + lxMidiCueList + "/" + lxMidiCueNumber);
+	// consoleLog(clock + ":" + "LX:" + lxMidiCueList + "/" + lxMidiCueNumber);
 }
 
 void parseLXCue(String m) {

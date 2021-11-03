@@ -38,6 +38,8 @@ void draw() {
 
   getClock();
 
+  outofordersync();
+
   updateVmix();
   drawConsole();
 }

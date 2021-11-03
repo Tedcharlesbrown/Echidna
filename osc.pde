@@ -2,14 +2,16 @@ import netP5.*;
 import oscP5.*;
 
 OscP5 disguiseIn, eosIn, reaperIn;
-NetAddress eosOut;
+NetAddress disguiseOut, eosOut;
 
 
 void setupOSC() {
 	disguiseIn = new OscP5(this, int(PORT_DISGUISE_IN));
+	
 	reaperIn = new OscP5(this, int(PORT_REAPER_IN));
 	// eosIn = new OscP5(this, int(PORT_EOS_IN));
 	// eosOut = new NetAddress(IP_EOS_OUT, int(PORT_EOS_OUT));
+	disguiseOut = new NetAddress("192.168.0.255", int(PORT_DISGUISE_IN) + 1);
 }
 
 void stopOSC() {

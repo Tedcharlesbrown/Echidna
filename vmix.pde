@@ -66,10 +66,6 @@ void screenshot() {
 	}
 }
 
-void mousePressed() {
-	triggerScreenshot();
-}
-
 void triggerScreenshot() {
 	String function = "SnapshotInput&Input=";
 	String dataPath = "&Value=C:/Users/Rkdns/Documents/GitHub/Echidna/data/";
