@@ -1,4 +1,5 @@
 String clock = "";
+String clockFile = "";
 String debug = "";
 boolean recording = false;
 int recordOffset = 0;
@@ -63,6 +64,7 @@ void getClock() {
   }
 
   clock = hour + ":" + minute + "." + second;
+  clockFile = hour + "." + minute + "." + second;
 }
 
 String millisToTimecode() {

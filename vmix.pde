@@ -13,13 +13,13 @@ void setupVmix() {
 		GetRequest get = new GetRequest(getPrefix + "ActivatorRefresh"); //Check connection
 		get.send();
 
-		println(get.getContent());
-
-		vMixAvailable = true;
-		consoleLog("CONNECTED TO VMIX!");
-	} else {
-		vMixAvailable = false;
-		consoleLog("COULD NOT CONNECT TO VMIX");
+		if (get.getContent().indexOf("Function completed successfully") != -1) {
+			vMixAvailable = true;
+			consoleLog("CONNECTED TO VMIX!");
+		} else {
+			vMixAvailable = false;
+			consoleLog("COULD NOT CONNECT TO VMIX");
+		}
 	}
 }
 
@@ -66,19 +66,30 @@ void screenshot() {
 	}
 }
 
+void mousePressed() {
+	triggerScreenshot();
+}
+
 void triggerScreenshot() {
-	// GetRequest get = new GetRequest(getPrefix + "SnapshotInput&Input=[INPUTNAME]&Value=c://WebImage.png"); // Screenshot Stage Feed - Web Browser
-	// get.send();
-	GetRequest get = new GetRequest(getPrefix + "KeyPress&Value=F1"); // Screenshot Stage Feed - Web Browser
+	String function = "SnapshotInput&Input=";
+	String dataPath = "&Value=C:/Users/Rkdns/Documents/GitHub/Echidna/data/";
+	String desktopPath = "&Value=C:/Users/Rkdns/Desktop/ShowDocumentation/";
+
+	GetRequest get = new GetRequest(getPrefix + function + "StageFeed-Clean" + dataPath + "showFeed.png"); // Screenshot Stage Feed - Web Browser
 	get.send();
 	delay(100);
-	get = new GetRequest(getPrefix + "KeyPress&Value=F2"); // Screenshot Multiview - Web Browser
+
+	get = new GetRequest(getPrefix + function + "Multiview-Clean" + dataPath + "multiview.png"); // Screenshot Stage Feed - Web Browser
 	get.send();
 	delay(100);
-	get = new GetRequest(getPrefix + "KeyPress&Value=F3"); // Screenshot Stage Feed - Archive
+
+	String stamp = clockFile + "_[" + lxMidiList1CueNumber + "]";
+
+	get = new GetRequest(getPrefix + function + "StageFeed-Overlay" + desktopPath + "ShowFeed/" + "feed_" + stamp + ".png"); // Screenshot Stage Feed - Documentation
 	get.send();
 	delay(100);
-	get = new GetRequest(getPrefix + "KeyPress&Value=F4"); // Screenshot Multiview - Archive
+
+	get = new GetRequest(getPrefix + function + "Multiview-Overlay" + desktopPath + "Multiview/" + "mv_" + stamp + ".png"); // Screenshot Multiview - Documentation
 	get.send();
 
 	// println(get.getContent());
