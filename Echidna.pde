@@ -4,25 +4,42 @@ boolean recording = false;
 int recordOffset = 0;
 String recordTime = "";
 
+boolean loaded = false;
+
+PImage logo, name;
+
 void setup() {
+  name = loadImage("data/logo/name.png");
+  logo = loadImage("data/logo/logo_v2.png");
   size(960, 540);
+
   setupSettings();
 
   setupVmix();
-
 
   serverSetup();
   setupMIDI();
   setupOSC();
   setupGui();
+
+  loaded = true;
 }
 
 void draw() {
-  getClock();
   background(0);
+  if (millis() < 1 * 1000) { //10
+    image(logo, 0, 0);
+  } else {
+    image(logo, 0, -height / 8, width / 2, height / 2);
+    cp5.show();
+  }
+  image(name, 0, 0);
 
+
+  getClock();
 
   drawVmix();
+  drawConsole();
 }
 
 void getClock() {
@@ -71,4 +88,3 @@ String millisToTimecode() {
 void setRecordTime() {
   recordOffset = millis();
 }
-

@@ -32,7 +32,6 @@ void updateVmix() {
 
 	get = new GetRequest(getPrefix + "SetText&Input=timeCode&SelectedName=Message&Value=" + timeCode); // D3 Next Trigger
 	get.send();
-	// println(get.getContent());
 }
 
 int delay = 0;
@@ -55,6 +54,8 @@ void drawVmix() {
 }
 
 void triggerScreenshot() {
+	// GetRequest get = new GetRequest(getPrefix + "SnapshotInput&Input=[INPUTNAME]&Value=c://WebImage.png"); // Screenshot Stage Feed - Web Browser
+	// get.send();
 	GetRequest get = new GetRequest(getPrefix + "KeyPress&Value=F1"); // Screenshot Stage Feed - Web Browser
 	get.send();
 	delay(100);
@@ -74,9 +75,9 @@ void triggerScreenshot() {
 
 void startRecord() {
 	GetRequest get = new GetRequest(getPrefix + "StartMultiCorder"); //Start multicorder
-	
+
 	get.send();
-	println("STARTING RECORD");
+	consoleLog("STARTING RECORD");
 }
 
 void stopRecord() {
@@ -84,7 +85,9 @@ void stopRecord() {
 
 	get.send();
 	println(get.getContent());
-	println("STOPPING RECORD");
+	if (loaded) { //prevent early logging
+		consoleLog("STOPPING RECORD");
+	}
 }
 
 

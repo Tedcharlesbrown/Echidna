@@ -3,6 +3,8 @@ import processing.data.*;
 import processing.event.*; 
 import processing.opengl.*; 
 
+import java.io.ByteArrayOutputStream; 
+import java.io.PrintStream; 
 import controlP5.*; 
 import java.util.*; 
 import http.*; 
@@ -25,31 +27,52 @@ import java.io.IOException;
 
 public class Echidna extends PApplet {
 
+
+
+
 String clock = "";
 String debug = "";
 boolean recording = false;
 int recordOffset = 0;
 String recordTime = "";
 
+boolean loaded = false;
+
+PImage logo, name;
+
 public void setup() {
+  name = loadImage("data/logo/name.png");
+  logo = loadImage("data/logo/logo_v2.png");
   
+
   setupSettings();
 
   // setupVmix();
 
-
-  serverSetup();
-  setupMIDI();
-  setupOSC();
+  // serverSetup();
+  // setupMIDI();
+  // setupOSC();
   setupGui();
+
+  loaded = true;
 }
 
 public void draw() {
-  getClock();
   background(0);
+  if (millis() < 1 * 1000) { //10
+    image(logo, 0, 0);
+  } else {
+    image(logo, 0, -height / 8, width / 2, height / 2);
+    cp5.show();
+  }
+  image(name, 0, 0);
 
+
+  getClock();
 
   // drawVmix();
+  drawConsole();
+  test();
 }
 
 public void getClock() {
@@ -74,8 +97,6 @@ public void getClock() {
   }
 
   clock = hour + ":" + minute + "." + second;
-
-  println(millisToTimecode());
 }
 
 public String millisToTimecode() {
@@ -101,6 +122,21 @@ public void setRecordTime() {
   recordOffset = millis();
 }
 
+public void test() {
+  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+PrintStream ps = new PrintStream(baos);
+// IMPORTANT: Save the old System.out!
+  PrintStream old = System.out;
+// Tell Java to use your special stream
+  System.setOut(ps);
+// Print some output: goes to your special stream
+  System.out.println("Foofoofoo!");
+// Put things back
+  System.out.flush();
+  System.setOut(old);
+// Show what happened
+  System.out.println("Here: " + baos.toString());
+}
 String d3Address = "/d3/showcontrol/";
 
 String d3HeartAddress = d3Address + "heartbeat";
@@ -300,13 +336,14 @@ public StringList eosCueParse(String argument) {
 
 
 ControlP5 cp5;
+String console = "CONSOLE";
 
 public void setupGui() {
 	cp5 = new ControlP5(this);
 
 	cp5.addTextfield("HTTP PORT")
 	.setValue(PORT_HTTP)
-	.setPosition(20, 20)
+	.setPosition(20, 150)
 	.setSize(100, 40)
 	.setFont(createFont("arial", 20))
 	.setFocus(false)
@@ -316,7 +353,7 @@ public void setupGui() {
 
 	cp5.addTextfield("DISGUISE PORT")
 	.setValue(PORT_DISGUISE_IN)
-	.setPosition(220, 20)
+	.setPosition(175, 150)
 	.setSize(100, 40)
 	.setFont(createFont("arial", 20))
 	.setFocus(false)
@@ -326,7 +363,7 @@ public void setupGui() {
 
 	cp5.addTextfield("REAPER PORT")
 	.setValue(PORT_REAPER_IN)
-	.setPosition(420, 20)
+	.setPosition(350, 150)
 	.setSize(100, 40)
 	.setFont(createFont("arial", 20))
 	.setFocus(false)
@@ -336,7 +373,7 @@ public void setupGui() {
 
 	cp5.addTextfield("VMIX PORT")
 	.setValue(PORT_VMIX)
-	.setPosition(20, 200)
+	.setPosition(20, 300)
 	.setSize(100, 40)
 	.setFont(createFont("arial", 20))
 	.setFocus(false)
@@ -346,7 +383,7 @@ public void setupGui() {
 
 	cp5.addButton("RECORD")
 	.setValue(0)
-	.setPosition(400, 400)
+	.setPosition(20, 400)
 	.setFont(createFont("arial", 20))
 	.setSize(150, 50)
 	.setSwitch(true)
@@ -356,7 +393,7 @@ public void setupGui() {
 
 	cp5.addScrollableList("dropdown")
 	.setLabel("MIDI IN PORT")
-	.setPosition(620, 20)
+	.setPosition(175, 300)
 	.setSize(250, 400)
 	.setFont(createFont("arial", 17))
 	.setBarHeight(40)
@@ -365,13 +402,58 @@ public void setupGui() {
 	.setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
 	.setValue(PApplet.parseInt(MIDI_INPUT))
 	;
+
+	cp5.hide();
+}
+
+
+public void drawConsole() {
+	int padding = 50;
+	push();
+	fill(50);
+	stroke(255);
+	translate(padding * 1.5f + width / 2, padding / 2);
+	rect(0, 0, width / 2 - padding * 2, height - padding);
+
+	int textSizer = 15;
+
+	fill(255);
+	noStroke();
+	textSize(textSizer);
+	translate(textSizer * 0.5f, textSizer * 0.5f);
+	textAlign(LEFT, TOP);
+	text(console, 0, 0);
+
+
+	pop();
+}
+
+
+public void consoleLog(String log) {
+	String temp = console;
+	int numberOfLines = 1;
+	for (int i = 0; i < temp.length(); i++) {
+		if (temp.charAt(i) == '\n') {
+			numberOfLines++;
+		}
+		if (numberOfLines == 20) { //Max number of lines
+			temp = temp.substring(0, i);
+		}
+	}
+	console = log;
+	console += '\n';
+	console += temp;
+
+	println(log);
 }
 
 public void dropdown(int n) { //get dropdown value
 	MIDI_INPUT = str(n);
 	closeMIDI();
 	setupMIDI();
-	println("MIDI IN PORT SET TO: " + n);
+	if (loaded) {
+		consoleLog("MIDI IN PORT SET TO: " + n);
+	}
 	saveSettings();
 }
 
@@ -381,24 +463,24 @@ public void controlEvent(ControlEvent theEvent) {
 			PORT_HTTP = theEvent.getStringValue();
 			serverStop();
 			serverSetup();
-			println("HTTP PORT SET TO: " + theEvent.getStringValue());
+			consoleLog("HTTP PORT SET TO: " + theEvent.getStringValue());
 		} else if (theEvent.getName().equals("DISGUISE PORT")) {
 			PORT_DISGUISE_IN = theEvent.getStringValue();
 			stopOSC();
 			setupOSC();
-			println("DISGUISE PORT SET TO: " + theEvent.getStringValue());
+			consoleLog("DISGUISE PORT SET TO: " + theEvent.getStringValue());
 		} else if (theEvent.getName().equals("REAPER PORT")) {
 			PORT_REAPER_IN = theEvent.getStringValue();
 			stopOSC();
 			setupOSC();
-			println("REAPER PORT SET TO: " + theEvent.getStringValue());
+			consoleLog("REAPER PORT SET TO: " + theEvent.getStringValue());
 		} else if (theEvent.getName().equals("VMIX PORT")) {
 			PORT_VMIX = theEvent.getStringValue();
 			setupVmix();
-			println("VMIX PORT SET TO: " + theEvent.getStringValue());
+			consoleLog("VMIX PORT SET TO: " + theEvent.getStringValue());
 		}
 		saveSettings();
-	} 
+	}
 }
 
 public void RECORD(boolean theValue) {
@@ -826,7 +908,6 @@ public void updateVmix() {
 
 	get = new GetRequest(getPrefix + "SetText&Input=timeCode&SelectedName=Message&Value=" + timeCode); // D3 Next Trigger
 	get.send();
-	// println(get.getContent());
 }
 
 int delay = 0;
@@ -849,6 +930,8 @@ public void drawVmix() {
 }
 
 public void triggerScreenshot() {
+	// GetRequest get = new GetRequest(getPrefix + "SnapshotInput&Input=[INPUTNAME]&Value=c://WebImage.png"); // Screenshot Stage Feed - Web Browser
+	// get.send();
 	GetRequest get = new GetRequest(getPrefix + "KeyPress&Value=F1"); // Screenshot Stage Feed - Web Browser
 	get.send();
 	delay(100);
@@ -868,9 +951,9 @@ public void triggerScreenshot() {
 
 public void startRecord() {
 	GetRequest get = new GetRequest(getPrefix + "StartMultiCorder"); //Start multicorder
-	
+
 	get.send();
-	println("STARTING RECORD");
+	consoleLog("STARTING RECORD");
 }
 
 public void stopRecord() {
@@ -878,7 +961,9 @@ public void stopRecord() {
 
 	get.send();
 	println(get.getContent());
-	println("STOPPING RECORD");
+	if (loaded) { //prevent early logging
+		consoleLog("STOPPING RECORD");
+	}
 }
 
 
