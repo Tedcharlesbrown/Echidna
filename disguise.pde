@@ -111,27 +111,29 @@ void parseD3Hint(String value) {
   }
 }
 
-void mousePressed() {
-  lxMidiList1CueNumber = "1";
-  println(int(lxMidiList1CueNumber) < int(d3CurrentTrigger),lxMidiList1CueNumber,d3CurrentTrigger);
-}
-
 void outofordersync() {
-  if (int(lxMidiList1CueNumber) > int(d3CurrentTrigger) && d3NextTriggerType.equals("CUE")) {
-    OscMessage myMessage = new OscMessage("/d3/showcontrol/cue");
-    myMessage.add(int(d3NextTrigger));
-    disguiseIn.send(myMessage, disguiseOut);
-    println("MOVING FORWARD",lxMidiList1CueNumber,d3CurrentTrigger);
-  }
-  if (int(lxMidiList1CueNumber) < int(d3CurrentTrigger)) {
-    int decrement = int(d3CurrentTrigger) - 1;
-    while (int(lxMidiList1CueNumber) < int(d3CurrentTrigger)) {
-      OscMessage myMessage = new OscMessage("/d3/showcontrol/cue");
-      myMessage.add(decrement);
-      disguiseIn.send(myMessage, disguiseOut);
-      decrement--;
+  if (false) {
+    if (int(lxMidiList1CueNumber) > 0) {
+      if (int(lxMidiList1CueNumber) > int(d3CurrentTrigger)) {
+        OscMessage myMessage = new OscMessage("/d3/showcontrol/cue");
+        myMessage.add(int(d3NextTrigger));
+        disguiseIn.send(myMessage, disguiseOut);
+        consoleLog("OUT OF ORDER: MOVING FORWARD");
+      }
+      if (int(lxMidiList1CueNumber) < int(d3CurrentTrigger)) {
+        int decrement = int(d3CurrentTrigger) - 1;
+        while (int(lxMidiList1CueNumber) < int(d3CurrentTrigger)) {
+          OscMessage myMessage = new OscMessage("/d3/showcontrol/cue");
+          myMessage.add(decrement);
+          disguiseIn.send(myMessage, disguiseOut);
+          decrement--;
+          consoleLog("OUT OF ORDER: MOVING BACKWARD");
+          if (decrement <= 0) {
+            return;
+          }
+        }
+      }
     }
-    println("MOVING BACKWARD");
   }
 }
 

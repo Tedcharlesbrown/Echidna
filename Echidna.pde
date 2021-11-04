@@ -32,6 +32,7 @@ void draw() {
   } else {
     image(logo, 0, -height / 8, width / 2, height / 2);
     cp5.show();
+    drawConsole();
   }
   image(name, 0, 0);
 
@@ -41,7 +42,7 @@ void draw() {
   outofordersync();
 
   updateVmix();
-  drawConsole();
+  
 }
 
 void getClock() {
