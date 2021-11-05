@@ -115,7 +115,3 @@ void stopRecord() {
 		consoleLog("PLEASE CHECK VMIX CONNECTION");
 	}
 }
-
-
-
-

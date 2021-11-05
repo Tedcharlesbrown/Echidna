@@ -12,7 +12,7 @@ String DEFAULT_MIDI_INPUT = "0";
 String DEFAULT_MIDI_OUTPUT = "-1";
 
 Table debugTable;
-String debugPath = "C:/Users/Rkdns/Desktop/ShowDocumentation/debug.csv";
+String debugPath = "C:/Users/SAI/Desktop/ShowDocumentation/debug.csv";
 
 //---
 
