@@ -6,43 +6,47 @@ ControlP5 cp5;
 String console = "";
 
 void setupGui() {
+  int textSize = 15;
+  int inputWidth = 75;
+  int inputHeight = 25;
+  
 	cp5 = new ControlP5(this);
 
-	cp5.addTextfield("HTTP PORT")
+	cp5.addTextfield("HTTP")
 	.setValue(PORT_HTTP)
 	.setPosition(20, 150)
-	.setSize(100, 40)
-	.setFont(createFont("arial", 20))
+	.setSize(inputWidth, inputHeight)
+	.setFont(createFont("arial", textSize))
 	.setFocus(false)
 	.setColor(color(255, 0, 0))
 	.setAutoClear(false)
 	;
 
-	cp5.addTextfield("DISGUISE PORT")
+	cp5.addTextfield("DISGUISE IN")
 	.setValue(PORT_DISGUISE_IN)
 	.setPosition(175, 150)
-	.setSize(100, 40)
-	.setFont(createFont("arial", 20))
+	.setSize(inputWidth, inputHeight)
+	.setFont(createFont("arial", textSize))
 	.setFocus(false)
 	.setColor(color(255, 0, 0))
 	.setAutoClear(false)
 	;
 
-	cp5.addTextfield("REAPER PORT")
+	cp5.addTextfield("REAPER IN")
 	.setValue(PORT_REAPER_IN)
 	.setPosition(350, 150)
-	.setSize(100, 40)
-	.setFont(createFont("arial", 20))
+	.setSize(inputWidth, inputHeight)
+	.setFont(createFont("arial",textSize))
 	.setFocus(false)
 	.setColor(color(255, 0, 0))
 	.setAutoClear(false)
 	;
 
-	cp5.addTextfield("VMIX PORT")
+	cp5.addTextfield("VMIX OUT")
 	.setValue(PORT_VMIX)
 	.setPosition(20, 300)
-	.setSize(100, 40)
-	.setFont(createFont("arial", 20))
+	.setSize(inputWidth, inputHeight)
+	.setFont(createFont("arial", textSize))
 	.setFocus(false)
 	.setColor(color(255, 0, 0))
 	.setAutoClear(false)
@@ -51,8 +55,8 @@ void setupGui() {
 	cp5.addButton("RECORD")
 	.setValue(0)
 	.setPosition(20, 400)
-	.setFont(createFont("arial", 20))
-	.setSize(150, 50)
+	.setFont(createFont("arial", textSize))
+	.setSize(int(inputWidth * 1.5), int(inputHeight * 1.5))
 	.setSwitch(true)
 	;
 
@@ -61,10 +65,10 @@ void setupGui() {
 	cp5.addScrollableList("dropdown")
 	.setLabel("MIDI IN PORT")
 	.setPosition(175, 300)
-	.setSize(250, 400)
-	.setFont(createFont("arial", 17))
-	.setBarHeight(40)
-	.setItemHeight(40)
+	.setSize(int(inputWidth * 2.5), int(inputHeight * 6))
+	.setFont(createFont("arial", textSize / 1.25))
+	.setBarHeight(inputHeight)
+	.setItemHeight(inputHeight)
 	.addItems(l)
 	.setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
 	.setValue(int(MIDI_INPUT))
