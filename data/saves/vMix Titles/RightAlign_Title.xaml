@@ -1,0 +1,7 @@
+<UserControl Width="1920" Height="1080" Panel.ZIndex="500" InputMethod.IsInputMethodEnabled="True" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mtl="clr-namespace:vMixTitleLibrary;assembly=vMixTitleLibrary" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid InputMethod.IsInputMethodEnabled="True">
+    <Image Stretch="Fill" Width="1920" Height="1080" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="0" InputMethod.IsInputMethodEnabled="True" />
+    <mtl:TextBlockDesign FontWeight="Bold" Fill="#FFFFFFFF" FontSize="48" Stroke="#FF000000" TextAlignment="Left" StrokeThickness="2" Text="TITLE" Name="TITLE" Width="293.367305915145" Height="55.1966667175293" Margin="1347.61059570313,509,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Effect="{x:Null}" Visibility="Visible" InputMethod.IsInputMethodEnabled="True" />
+    <mtl:TextBlockDesign FontWeight="Bold" Fill="#FFFFFFFF" FontSize="48" Stroke="#FF000000" TextAlignment="Right" StrokeThickness="2" Text="Text" Name="Message" Width="303.716814159292" Height="55.1966667175293" Margin="1608.02966308594,509,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Visible" InputMethod.IsInputMethodEnabled="True" />
+  </Grid>
+</UserControl>
