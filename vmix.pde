@@ -68,24 +68,24 @@ void screenshot() {
 
 void triggerScreenshot() {
 	String function = "SnapshotInput&Input=";
-	String dataPath = "&Value=C:/Users/Rkdns/Documents/GitHub/Echidna/data/";
-	String desktopPath = "&Value=C:/Users/Rkdns/Desktop/ShowDocumentation/";
+	// String dataPath = "&Value=C:/Users/Rkdns/Documents/GitHub/Echidna/data/";
+	// String desktopPath = "&Value=C:/Users/Rkdns/Desktop/ShowDocumentation/";
 
-	GetRequest get = new GetRequest(getPrefix + function + "StageFeed-Clean" + dataPath + "showFeed.png"); // Screenshot Stage Feed - Web Browser
+	GetRequest get = new GetRequest(getPrefix + function + "StageFeed-Clean" + "&Value=data/" + "showFeed.png"); // Screenshot Stage Feed - Web Browser
 	get.send();
 	delay(100);
 
-	get = new GetRequest(getPrefix + function + "Multiview-Clean" + dataPath + "multiview.png"); // Screenshot Stage Feed - Web Browser
+	get = new GetRequest(getPrefix + function + "Multiview-Clean" + "&Value=data/" + "multiview.png"); // Screenshot Stage Feed - Web Browser
 	get.send();
 	delay(100);
 
 	String stamp = clockFile + "_[" + lxMidiList1CueNumber + "]";
 
-	get = new GetRequest(getPrefix + function + "StageFeed-Overlay" + desktopPath + "ShowFeed/" + "feed_" + stamp + ".png"); // Screenshot Stage Feed - Documentation
+	get = new GetRequest(getPrefix + function + "StageFeed-Overlay" + "&Value=" + desktopPath + "ShowFeed/" + "feed_" + stamp + ".png"); // Screenshot Stage Feed - Documentation
 	get.send();
 	delay(100);
 
-	get = new GetRequest(getPrefix + function + "Multiview-Overlay" + desktopPath + "Multiview/" + "mv_" + stamp + ".png"); // Screenshot Multiview - Documentation
+	get = new GetRequest(getPrefix + function + "Multiview-Overlay" + "&Value=" + desktopPath + "Multiview/" + "mv_" + stamp + ".png"); // Screenshot Multiview - Documentation
 	get.send();
 
 	// println(get.getContent());

@@ -12,7 +12,7 @@ String DEFAULT_MIDI_INPUT = "0";
 String DEFAULT_MIDI_OUTPUT = "-1";
 
 Table debugTable;
-String debugPath;
+String desktopPath;
 //---
 
 String PORT_HTTP, PORT_DISGUISE_IN, PORT_REAPER_IN, PORT_EOS_IN, IP_EOS_OUT, PORT_EOS_OUT, PORT_VMIX, MIDI_INPUT, MIDI_OUTPUT;
@@ -37,9 +37,8 @@ void defaultSettings() {
 PrintWriter settingsOut;
 
 void setupSettings() {
-	debugPath = System.getProperty("user.home") + "/Desktop/Echidna/debug.csv";
-	
-	// debugPath = "C:/Users/SAI/Desktop/ShowDocumentation/debug.csv";
+	desktopPath = System.getProperty("user.home") + "/Desktop/Echidna/debug.csv";
+	// desktopPath = "C:/Users/SAI/Desktop/ShowDocumentation/debug.csv";
 
 	debugTable = new Table();
 	debugTable.addColumn("Time");
@@ -49,7 +48,7 @@ void setupSettings() {
 	debugTable.addColumn("D3 Time");
 	debugTable.addColumn("LX Cue");
 	debugTable.addColumn("D3 Cue");
-	saveTable(debugTable,debugPath);
+	saveTable(debugTable,desktopPath);
 
 	defaultSettings();
 	String[] settings = loadStrings("data/settings.txt");
