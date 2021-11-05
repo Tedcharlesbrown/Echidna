@@ -42,7 +42,6 @@ void draw() {
   outofordersync();
 
   updateVmix();
-  
 }
 
 void getClock() {

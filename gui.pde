@@ -12,7 +12,7 @@ void setupGui() {
 
 	cp5 = new ControlP5(this);
 
-	cp5.addTextfield("HTTP")
+	cp5.addTextfield("SERVER")
 	.setValue(PORT_HTTP)
 	.setPosition(20, 200)
 	.setSize(inputWidth, inputHeight)
@@ -91,7 +91,7 @@ void setupGui() {
 	.setBarHeight(inputHeight)
 	.setItemHeight(inputHeight)
 	.addItems(l)
-	.setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+	// .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
 	.setValue(int(MIDI_INPUT))
 	.setColorValue(0xffffffff)          
 	.setColorActive(0xff9C8DD7)					
@@ -156,22 +156,22 @@ void dropdown(int n) { //get dropdown value
 
 void controlEvent(ControlEvent theEvent) {
 	if (theEvent.isAssignableFrom(Textfield.class)) {
-		if (theEvent.getName().equals("HTTP PORT")) {
+		if (theEvent.getName().equals("SERVER")) {
 			PORT_HTTP = theEvent.getStringValue();
 			serverStop();
 			serverSetup();
 			consoleLog("HTTP PORT SET TO: " + theEvent.getStringValue());
-		} else if (theEvent.getName().equals("DISGUISE PORT")) {
+		} else if (theEvent.getName().equals("DISGUISE IN")) {
 			PORT_DISGUISE_IN = theEvent.getStringValue();
 			stopOSC();
 			setupOSC();
 			consoleLog("DISGUISE PORT SET TO: " + theEvent.getStringValue());
-		} else if (theEvent.getName().equals("REAPER PORT")) {
+		} else if (theEvent.getName().equals("REAPER IN")) {
 			PORT_REAPER_IN = theEvent.getStringValue();
 			stopOSC();
 			setupOSC();
 			consoleLog("REAPER PORT SET TO: " + theEvent.getStringValue());
-		} else if (theEvent.getName().equals("VMIX PORT")) {
+		} else if (theEvent.getName().equals("VMIX OUT")) {
 			PORT_VMIX = theEvent.getStringValue();
 			setupVmix();
 			consoleLog("VMIX PORT SET TO: " + theEvent.getStringValue());
