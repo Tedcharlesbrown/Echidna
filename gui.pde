@@ -6,40 +6,52 @@ ControlP5 cp5;
 String console = "";
 
 void setupGui() {
-  int textSize = 15;
-  int inputWidth = 75;
-  int inputHeight = 25;
-  
+	int textSize = 15;
+	int inputWidth = 75;
+	int inputHeight = 25;
+
 	cp5 = new ControlP5(this);
 
 	cp5.addTextfield("HTTP")
 	.setValue(PORT_HTTP)
-	.setPosition(20, 150)
+	.setPosition(20, 200)
 	.setSize(inputWidth, inputHeight)
 	.setFont(createFont("arial", textSize))
 	.setFocus(false)
-	.setColor(color(255, 0, 0))
 	.setAutoClear(false)
+	.setColorValue(0xffffffff)          
+	.setColorActive(0xffff8800)					
+	.setColorCaptionLabel(0xffffffff) 
+	.setColorForeground(0xff9C8DD7)         
+	.setColorBackground(0xff360073)  
 	;
 
 	cp5.addTextfield("DISGUISE IN")
 	.setValue(PORT_DISGUISE_IN)
-	.setPosition(175, 150)
+	.setPosition(175, 200)
 	.setSize(inputWidth, inputHeight)
 	.setFont(createFont("arial", textSize))
 	.setFocus(false)
-	.setColor(color(255, 0, 0))
 	.setAutoClear(false)
+	.setColorValue(0xffffffff)          
+	.setColorActive(0xffff8800)					
+	.setColorCaptionLabel(0xffffffff) 
+	.setColorForeground(0xff9C8DD7)         
+	.setColorBackground(0xff360073)  
 	;
 
 	cp5.addTextfield("REAPER IN")
 	.setValue(PORT_REAPER_IN)
-	.setPosition(350, 150)
+	.setPosition(175, 300)
 	.setSize(inputWidth, inputHeight)
-	.setFont(createFont("arial",textSize))
+	.setFont(createFont("arial", textSize))
 	.setFocus(false)
-	.setColor(color(255, 0, 0))
 	.setAutoClear(false)
+	.setColorValue(0xffffffff)          
+	.setColorActive(0xffff8800)					
+	.setColorCaptionLabel(0xffffffff) 
+	.setColorForeground(0xff9C8DD7)         
+	.setColorBackground(0xff360073)  
 	;
 
 	cp5.addTextfield("VMIX OUT")
@@ -48,23 +60,32 @@ void setupGui() {
 	.setSize(inputWidth, inputHeight)
 	.setFont(createFont("arial", textSize))
 	.setFocus(false)
-	.setColor(color(255, 0, 0))
 	.setAutoClear(false)
+	.setColorValue(0xffffffff)          
+	.setColorActive(0xffff8800)					
+	.setColorCaptionLabel(0xffffffff) 
+	.setColorForeground(0xff9C8DD7)         
+	.setColorBackground(0xff360073)  
 	;
 
 	cp5.addButton("RECORD")
 	.setValue(0)
-	.setPosition(20, 400)
+	.setPosition(325, 450)
 	.setFont(createFont("arial", textSize))
 	.setSize(int(inputWidth * 1.5), int(inputHeight * 1.5))
 	.setSwitch(true)
+	.setColorValue(0xffffffff)          
+	.setColorActive(0xffff8800)					
+	.setColorCaptionLabel(0xffffffff) 
+	.setColorForeground(0xff9C8DD7)         
+	.setColorBackground(0xff360073)  
 	;
 
 	List l = Arrays.asList(MidiBus.availableInputs());
 
 	cp5.addScrollableList("dropdown")
 	.setLabel("MIDI IN PORT")
-	.setPosition(175, 300)
+	.setPosition(325, 200)
 	.setSize(int(inputWidth * 2.5), int(inputHeight * 6))
 	.setFont(createFont("arial", textSize / 1.25))
 	.setBarHeight(inputHeight)
@@ -72,6 +93,11 @@ void setupGui() {
 	.addItems(l)
 	.setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
 	.setValue(int(MIDI_INPUT))
+	.setColorValue(0xffffffff)          
+	.setColorActive(0xff9C8DD7)					
+	.setColorCaptionLabel(0xffffffff) 
+	.setColorForeground(0xff9C8DD7)     
+	.setColorBackground(0xff360073)  
 	;
 
 	cp5.hide();

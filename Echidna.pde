@@ -30,7 +30,7 @@ void draw() {
   if (millis() < 1 * 1000) { //10
     image(logo, 0, 0);
   } else {
-    image(logo, 0, -height / 8, width / 2, height / 2);
+    image(logo, 0, -height / 7, width / 1.75, height / 1.75);
     cp5.show();
     drawConsole();
   }
