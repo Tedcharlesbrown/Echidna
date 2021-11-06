@@ -23,9 +23,6 @@ String lxMidiCueHistory = "";
 int indexStart, indexEnd;
 
 void setupMIDI() {
-	// MidiBus.list();
-	// println(MidiBus.availableInputs());
-	// println(MidiBus.availableOutputs());
 	myBus = new MidiBus(this, int(MIDI_INPUT), int(MIDI_OUTPUT));
 }
 
