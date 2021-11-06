@@ -41,8 +41,9 @@ void draw() {
 
   getClock();
 
-  outofordersync();
+  // outofordersync();
 
+  updateMIDI();
   updateVmix();
 }
 

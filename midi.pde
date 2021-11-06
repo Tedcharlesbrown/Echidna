@@ -33,6 +33,14 @@ void closeMIDI() {
 	myBus.close();
 }
 
+int checkMidiTimer = 0;
+void updateMIDI() {
+	if ((millis() / 100) - checkMidiTimer > 100 && !recording) {
+		checkMidiTimer = millis() / 100;
+		myBus.findMidiDevices();
+	}
+}
+
 
 void midiMessage(MidiMessage message) {
 	if (message.getMessage().length >= 10) {
@@ -95,14 +103,14 @@ void lxDebug() {
 	debug += ",";
 
 	TableRow newRow = debugTable.addRow();
-	newRow.setString("Time",clock);
-	newRow.setString("RecordTime",millisToTimecode());
-	newRow.setString("Trigger","LX");
+	newRow.setString("Time", clock);
+	newRow.setString("RecordTime", millisToTimecode());
+	newRow.setString("Trigger", "LX");
 	newRow.setString("Timecode", timeCode);
 	newRow.setString("D3 Time", d3Position);
 	newRow.setString("LX Cue", lxMidiCueList + "/" + lxMidiCueNumber);
 	newRow.setString("D3 Cue", d3CurrentCue);
-	saveTable(debugTable,desktopPath);
+	saveTable(debugTable, desktopPath);
 
 	// consoleLog(clock + ":" + "LX:" + lxMidiCueList + "/" + lxMidiCueNumber);
 }
