@@ -28,7 +28,7 @@ void setup() {
 
 void draw() {
   background(0);
-  if (millis() < 1 * 1000) { //10
+  if (millis() < 10 * 1000) { //10
     image(logo, 0, 0);
   } else {
     image(logo, 0, -height / 7, width / 1.75, height / 1.75);

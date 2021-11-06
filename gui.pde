@@ -14,7 +14,7 @@ void setupGui() {
 
 	cp5.addTextfield("SERVER")
 	.setValue(PORT_HTTP)
-	.setPosition(37, 200)
+	.setPosition(57, 200)
 	.setSize(inputWidth, inputHeight)
 	.setFont(createFont("arial", textSize))
 	.setFocus(false)
@@ -28,7 +28,7 @@ void setupGui() {
 
 	cp5.addTextfield("VMIX OUT")
 	.setValue(PORT_VMIX)
-	.setPosition(37, 300)
+	.setPosition(57, 300)
 	.setSize(inputWidth, inputHeight)
 	.setFont(createFont("arial", textSize))
 	.setFocus(false)
@@ -42,7 +42,7 @@ void setupGui() {
 
 	cp5.addTextfield("DISGUISE IN")
 	.setValue(PORT_DISGUISE_IN)
-	.setPosition(178, 200)
+	.setPosition(198, 200)
 	.setSize(inputWidth, inputHeight)
 	.setFont(createFont("arial", textSize))
 	.setFocus(false)
@@ -56,7 +56,7 @@ void setupGui() {
 
 	cp5.addTextfield("REAPER IN")
 	.setValue(PORT_REAPER_IN)
-	.setPosition(178, 300)
+	.setPosition(198, 300)
 	.setSize(inputWidth, inputHeight)
 	.setFont(createFont("arial", textSize))
 	.setFocus(false)
@@ -70,7 +70,7 @@ void setupGui() {
 
 	cp5.addButton("RECORD")
 	.setValue(0)
-	.setPosition(325, 450)
+	.setPosition(345, 450)
 	.setFont(createFont("arial", textSize))
 	.setSize(int(inputWidth * 1.5), int(inputHeight * 1.5))
 	.setSwitch(true)
@@ -85,7 +85,7 @@ void setupGui() {
 
 	cp5.addScrollableList("dropdown")
 	.setLabel("MIDI IN PORT")
-	.setPosition(310, 200)
+	.setPosition(330, 200)
 	.setSize(int(inputWidth * 2.5), int(inputHeight * 6))
 	.setFont(createFont("arial", textSize / 1.25))
 	.setBarHeight(inputHeight)
