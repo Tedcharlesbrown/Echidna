@@ -7,11 +7,12 @@ String recordTime = "";
 
 boolean loaded = false;
 
-PImage logo, name;
+PImage logo, name, gui;
 
 void setup() {
-  name = loadImage("data/logo/name.png");
-  logo = loadImage("data/logo/logo_v2.png");
+  name = loadImage("data/images/name.png");
+  logo = loadImage("data/images/logo_v2.png");
+  gui = loadImage("data/images/gui.png");
   size(960, 540);
 
   setupSettings();
@@ -31,6 +32,7 @@ void draw() {
     image(logo, 0, 0);
   } else {
     image(logo, 0, -height / 7, width / 1.75, height / 1.75);
+    image(gui,0,0);
     cp5.show();
     drawConsole();
   }
