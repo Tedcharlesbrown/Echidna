@@ -1,12 +1,5 @@
-String clock = "";
-String clockFile = "";
 String debug = "";
-boolean recording = false;
-int recordOffset = 0;
-String recordTime = "";
-
 boolean loaded = false;
-
 PImage logo, name, gui;
 
 void setup() {
@@ -46,6 +39,9 @@ void draw() {
   updateMIDI();
   updateVmix();
 }
+
+String clock = "";
+String clockFile = "";
 
 void getClock() {
   String hour = "";
@@ -88,6 +84,10 @@ String millisToTimecode() {
     return "NO";
   }
 }
+
+boolean recording = false;
+int recordOffset = 0;
+String recordTime = "";
 
 void setRecordTime() {
   recordOffset = millis();
