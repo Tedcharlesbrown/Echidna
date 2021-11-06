@@ -38,6 +38,8 @@ void draw() {
 
   updateMIDI();
   updateVmix();
+
+  // drawInputs();
 }
 
 String clock = "";
@@ -91,4 +93,45 @@ String recordTime = "";
 
 void setRecordTime() {
   recordOffset = millis();
+}
+
+input d3Input = new input("DISGUISE");
+input midiInput = new input("MIDI");
+input timecodeInput = new input("TIMECODE");
+
+void drawInputs() {
+  d3Input.draw(200,500);
+}
+
+class input {
+  String name = "";
+  int w = 100;
+  int h = 20;
+  color c = color(0,255,0);
+  input(String tempName) {
+    name = tempName;
+  }
+
+  void draw(float posX, float posY) {
+    push();
+    textAlign(CENTER,CENTER);
+    translate(posX,posY);
+
+    fill(c);
+    rect(0,0,w,h);
+
+
+    fill(0);
+    stroke(255);
+    text(name,w/2,h/2.25);
+
+
+    pop();
+  }
+
+  void update(boolean trigger) {
+    if (trigger) {
+      c = color(0,255,0);
+    }
+  }
 }
