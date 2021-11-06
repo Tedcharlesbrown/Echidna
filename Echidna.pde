@@ -87,8 +87,6 @@ String millisToTimecode() {
   } else {
     return "NO";
   }
-
-
 }
 
 void setRecordTime() {
