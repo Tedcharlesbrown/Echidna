@@ -109,7 +109,7 @@ void drawConsole() {
 	push();
 	fill(50);
 	stroke(255);
-	translate(padding * 1.5 + width / 2, padding / 2);
+	translate(padding * 1.5 + width / 2, padding / 1.75);
 	rect(0, 0, width / 2 - padding * 2, height - padding);
 
 	int textSizer = 15;

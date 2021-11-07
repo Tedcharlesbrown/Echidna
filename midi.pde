@@ -24,6 +24,7 @@ int indexStart, indexEnd;
 
 void setupMIDI() {
 	myBus = new MidiBus(this, int(MIDI_INPUT), int(MIDI_OUTPUT));
+	hasMIDI = false;
 }
 
 void closeMIDI() {
@@ -42,6 +43,7 @@ void updateMIDI() {
 void midiMessage(MidiMessage message) {
 	if (message.getMessage().length >= 10) {
 		parseSYSEX(message);
+		midiInput.trigger();
 	} else {
 		for (int i = 0; i < message.getMessage().length - 1; i++) {
 			String m = hex(message.getMessage()[i]);

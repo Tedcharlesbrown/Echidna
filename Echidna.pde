@@ -27,6 +27,7 @@ void draw() {
     image(logo, 0, -height / 7, width / 1.75, height / 1.75);
     image(gui,0,0);
     cp5.show();
+    drawInputs();
     drawConsole();
   }
   image(name, 0, 0);
@@ -38,8 +39,6 @@ void draw() {
 
   updateMIDI();
   updateVmix();
-
-  // drawInputs();
 }
 
 String clock = "";
@@ -98,16 +97,26 @@ void setRecordTime() {
 input d3Input = new input("DISGUISE");
 input midiInput = new input("MIDI");
 input timecodeInput = new input("TIMECODE");
+boolean hasD3, hasMIDI, hasTimecode;
 
 void drawInputs() {
-  d3Input.draw(200,500);
+  push();
+  translate(555,4);
+
+  midiInput.draw(0,0);
+  d3Input.draw(80,0);
+  timecodeInput.draw(160,0);
+  pop();
 }
 
 class input {
   String name = "";
-  int w = 100;
+  int w = 75;
   int h = 20;
-  color c = color(0,255,0);
+
+  int timer = 0;
+  int max = 1 * (60 * 60);
+
   input(String tempName) {
     name = tempName;
   }
@@ -117,21 +126,46 @@ class input {
     textAlign(CENTER,CENTER);
     translate(posX,posY);
 
-    fill(c);
+    fill(150,50,50);
     rect(0,0,w,h);
 
+    if (timer == max) {
+      fill(0,255,0);
+      strokeWeight(2);
+      stroke(0,255,0);
+    } else {
+      fill(50,150,50);
+      strokeWeight(1);
+      stroke(0);
+    }
+
+    rect(0,0,map(timer,0,max,0,w),h);
 
     fill(0);
     stroke(255);
     text(name,w/2,h/2.25);
 
+    if (timer <= 0) {
+      timer = 0;
+    } else {
+      timer--;
+    }
 
     pop();
   }
 
-  void update(boolean trigger) {
-    if (trigger) {
-      c = color(0,255,0);
-    }
+  void trigger() {
+      timer = max;
+      if (name.equals("DISGUISE") && !hasD3) {
+        consoleLog("RECEIVED TRIGGER FROM" + name + "!");
+        hasD3 = true;
+      } else if (name.equals("MIDI") && !hasMIDI) {
+        consoleLog("RECEIVED TRIGGER FROM" + name + "!");
+        hasMIDI = true;
+      } else if (name.equals("TIMECODE") && !hasTimecode) {
+        consoleLog("RECEIVED TRIGGER FROM" + name + "!");
+        hasTimecode = true;
+      }
+      
   }
 }
