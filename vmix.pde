@@ -10,10 +10,7 @@ void setupVmix() {
 	getPrefix = trim(getIP + PORT_VMIX + getFunction);
 
 	if (pingHost("127.0.0.1", int(PORT_VMIX), 1000)) {
-		GetRequest get = new GetRequest(getPrefix + "ActivatorRefresh"); //Check connection
-		get.send();
-
-		if (get.getContent().indexOf("Function completed successfully") != -1) {
+		if (checkVmix()) {
 			vMixAvailable = true;
 			consoleLog("CONNECTED TO VMIX!");
 		} else {
@@ -24,6 +21,7 @@ void setupVmix() {
 }
 
 
+int checkVmixTimer = 0;
 void updateVmix() {
 	if (vMixAvailable) {
 		screenshot();
@@ -45,6 +43,12 @@ void updateVmix() {
 
 		get = new GetRequest(getPrefix + "SetText&Input=timeCode&SelectedName=Message&Value=" + timeCode); // D3 Next Trigger
 		get.send();
+
+		checkVmix();
+
+	} else if ((millis() / 100) - checkVmixTimer > 100) {
+		checkVmixTimer = millis() / 100;
+		checkVmix();
 	}
 }
 
@@ -68,8 +72,6 @@ void screenshot() {
 
 void triggerScreenshot() {
 	String function = "SnapshotInput&Input=";
-	// String dataPath = "&Value=C:/Users/Rkdns/Documents/GitHub/Echidna/data/";
-	// String desktopPath = "&Value=C:/Users/Rkdns/Desktop/ShowDocumentation/";
 
 	GetRequest get = new GetRequest(getPrefix + function + "StageFeed-Clean" + "&Value=data/" + "showFeed.png"); // Screenshot Stage Feed - Web Browser
 	get.send();
@@ -88,7 +90,7 @@ void triggerScreenshot() {
 	get = new GetRequest(getPrefix + function + "Multiview-Overlay" + "&Value=" + desktopPath + "Multiview/" + "mv_" + stamp + ".png"); // Screenshot Multiview - Documentation
 	get.send();
 
-	// println(get.getContent());
+	checkVmix();
 
 	println("SCREENSHOT");
 }
@@ -114,4 +116,22 @@ void stopRecord() {
 	} else {
 		consoleLog("PLEASE CHECK VMIX CONNECTION");
 	}
+}
+
+boolean checkVmix() {
+	GetRequest get = new GetRequest(getPrefix + "ActivatorRefresh");
+	get.send();
+	try {
+		if (get.getContent().indexOf("Function completed successfully") != -1) {
+			vMixInput.trigger();
+			return true;
+		} else {
+			vMixAvailable = false;
+			return false;
+		}
+	} catch (Exception e) {
+		vMixAvailable = false;
+		return false;
+	}
+
 }
