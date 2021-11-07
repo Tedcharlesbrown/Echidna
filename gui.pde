@@ -5,6 +5,8 @@ import java.net.*;
 ControlP5 cp5;
 String console = "";
 
+List midiInputList;
+
 void setupGui() {
 	int textSize = 15;
 	int inputWidth = 75;
@@ -81,7 +83,7 @@ void setupGui() {
 	.setColorBackground(0xff360073)  
 	;
 
-	List l = Arrays.asList(MidiBus.availableInputs());
+	midiInputList = Arrays.asList(MidiBus.availableInputs());
 
 	cp5.addScrollableList("dropdown")
 	.setLabel("MIDI IN PORT")
@@ -90,7 +92,7 @@ void setupGui() {
 	.setFont(createFont("arial", textSize / 1.25))
 	.setBarHeight(inputHeight)
 	.setItemHeight(inputHeight)
-	.addItems(l)
+	.addItems(midiInputList)
 	// .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
 	.setValue(int(MIDI_INPUT))
 	.setColorValue(0xffffffff)          

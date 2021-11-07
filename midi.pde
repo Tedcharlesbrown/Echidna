@@ -36,6 +36,14 @@ void updateMIDI() {
 	if ((millis() / 100) - checkMidiTimer > 100 && !recording) {
 		checkMidiTimer = millis() / 100;
 		myBus.findMidiDevices();
+
+		List newList = Arrays.asList(MidiBus.availableInputs());
+
+		if (midiInputList.size() != newList.size()) {
+			consoleLog("MIDI DEVICES CHANGED");
+			midiInputList = Arrays.asList(MidiBus.availableInputs());
+			cp5.get(ScrollableList.class, "dropdown").setItems(midiInputList);
+		}
 	}
 }
 
