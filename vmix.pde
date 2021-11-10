@@ -56,6 +56,10 @@ int delay = 0;
 Boolean trigger = false;
 int videoDelay = 150;
 
+void mousePressed() {
+   triggerScreenshot(); 
+}
+
 void screenshot() {
 	if (!d3OldCurrentCue.equals(d3CurrentCue) || !lxOldMidiCueNumber.equals(lxMidiCueNumber)) {
 		delay = millis();
@@ -64,6 +68,7 @@ void screenshot() {
 		trigger = true;
 	} else {
 		if (millis() > delay + videoDelay && trigger) {
+    //if (trigger) {
 			triggerScreenshot();
 			trigger = false;
 		}
@@ -71,21 +76,26 @@ void screenshot() {
 }
 
 void triggerScreenshot() {
+  int vMixDelay = 250;
 	String function = "SnapshotInput&Input=";
 
-	GetRequest get = new GetRequest(getPrefix + function + "StageFeed-Clean" + "&Value=data/" + "showFeed.png"); // Screenshot Stage Feed - Web Browser
-	get.send();
-	delay(100);
+  String path = "C:/Users/SAI/Documents/GitHub/Echidna/data/";
+  desktopPath = "C:/Users/SAI/Desktop/Echidna/";
 
-	get = new GetRequest(getPrefix + function + "Multiview-Clean" + "&Value=data/" + "multiview.png"); // Screenshot Stage Feed - Web Browser
+	GetRequest get = new GetRequest(getPrefix + function + "StageFeed-Clean" + "&Value=" + path + "showFeed.png"); // Screenshot Stage Feed - Web Browser
 	get.send();
-	delay(100);
+	delay(vMixDelay);
+
+	get = new GetRequest(getPrefix + function + "Multiview-Clean" + "&Value=" + path + "multiview.png"); // Screenshot Stage Feed - Web Browser
+	get.send();
+	delay(vMixDelay);
 
 	String stamp = clockFile + "_[" + lxMidiList1CueNumber + "]";
+   
 
 	get = new GetRequest(getPrefix + function + "StageFeed-Overlay" + "&Value=" + desktopPath + "ShowFeed/" + "feed_" + stamp + ".png"); // Screenshot Stage Feed - Documentation
 	get.send();
-	delay(100);
+	delay(vMixDelay);
 
 	get = new GetRequest(getPrefix + function + "Multiview-Overlay" + "&Value=" + desktopPath + "Multiview/" + "mv_" + stamp + ".png"); // Screenshot Multiview - Documentation
 	get.send();

@@ -38,7 +38,6 @@ PrintWriter settingsOut;
 
 void setupSettings() {
 	desktopPath = System.getProperty("user.home") + "/Desktop/Echidna/debug.csv";
-	// desktopPath = "C:/Users/SAI/Desktop/ShowDocumentation/debug.csv";
 
 	debugTable = new Table();
 	debugTable.addColumn("Time");
