@@ -56,10 +56,6 @@ int delay = 0;
 Boolean trigger = false;
 int videoDelay = 150;
 
-void mousePressed() {
-   triggerScreenshot(); 
-}
-
 void screenshot() {
 	if (!d3OldCurrentCue.equals(d3CurrentCue) || !lxOldMidiCueNumber.equals(lxMidiCueNumber)) {
 		delay = millis();
@@ -69,13 +65,15 @@ void screenshot() {
 	} else {
 		if (millis() > delay + videoDelay && trigger) {
     //if (trigger) {
-			triggerScreenshot();
+			//triggerScreenshot();
 			trigger = false;
 		}
 	}
 }
 
 void triggerScreenshot() {
+  //NOTE: REPLACE SPACES WITH _
+  //NOTE: FIX PATHS
   int vMixDelay = 250;
 	String function = "SnapshotInput&Input=";
 

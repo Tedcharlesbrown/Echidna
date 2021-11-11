@@ -54,8 +54,8 @@ void d3StringParse(String address, String value) {
     } else if (address.indexOf(d3ModeAddress) != -1) {
       d3Mode = value;
     }
-  } catch (Exception e) {
-
+  } 
+  catch (Exception e) {
   }
 }
 
@@ -70,8 +70,8 @@ void d3FloatParse(String address, float value) {
     } else if (address.indexOf(d3BPMAddress) != -1) {
       d3BPM = value;
     }
-  } catch (Exception e) {
-
+  } 
+  catch (Exception e) {
   }
 }
 
@@ -79,35 +79,40 @@ void parseD3Hint(String value) {
   int indexStart;
   int indexEnd;
 
-  value = value.trim();
+  try {
 
-  indexStart = value.indexOf(" ");
-  indexEnd = value.indexOf("|");
+    value = value.trim();
 
-  d3CurrentTriggerType = value.substring(0, indexStart).trim();
+    indexStart = value.indexOf(" ");
+    indexEnd = value.indexOf("|");
 
-  if (indexEnd != -1) {
-    d3CurrentTrigger = value.substring(indexStart, indexEnd).trim();
-  } else {
-    indexEnd = value.indexOf("+");
-    d3CurrentTrigger = value.substring(indexStart, indexEnd).trim();
-  }
+    d3CurrentTriggerType = value.substring(0, indexStart).trim();
 
-  //------------------------
+    if (indexEnd != -1) {
+      d3CurrentTrigger = value.substring(indexStart, indexEnd).trim();
+    } else {
+      indexEnd = value.indexOf("+");
+      d3CurrentTrigger = value.substring(indexStart, indexEnd).trim();
+    }
 
-  indexStart = value.indexOf("+");
-  value = value.substring(indexStart + 12).trim();
+    //------------------------
 
-  indexStart = value.indexOf(" ");
-  indexEnd = value.indexOf("|");
+    indexStart = value.indexOf("+");
+    value = value.substring(indexStart + 12).trim();
 
-  d3NextTriggerType = value.substring(0, indexStart).trim();
+    indexStart = value.indexOf(" ");
+    indexEnd = value.indexOf("|");
 
-  if (indexEnd != -1) {
-    d3NextTrigger = value.substring(indexStart, indexEnd).trim();
-  } else {
-    indexEnd = value.indexOf("-");
-    d3NextTrigger = value.substring(indexStart, indexEnd).trim();
+    d3NextTriggerType = value.substring(0, indexStart).trim();
+
+    if (indexEnd != -1) {
+      d3NextTrigger = value.substring(indexStart, indexEnd).trim();
+    } else {
+      indexEnd = value.indexOf("-");
+      d3NextTrigger = value.substring(indexStart, indexEnd).trim();
+    }
+  } 
+  catch (Exception e) {
   }
 }
 
