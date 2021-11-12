@@ -24,15 +24,19 @@ void stopOSC() {
 
 /* incoming osc message are forwarded to the oscEvent method. */
 void oscEvent(OscMessage theOscMessage) {
-  String address = theOscMessage.addrPattern();
-  //NOTE: ADD IP FILTER
-  if (address.indexOf(d3Address) != -1) { //From D3
-    d3OSCParse(theOscMessage);
-    d3Input.trigger();
-  } else if (address.indexOf(eosActiveCue) != -1) { //From EOS
-    eosOSCParse(theOscMessage);
-  } else if (address.indexOf(reaperTime) != -1) { //From REAPER
-    reaperParse(theOscMessage);
-    timecodeInput.trigger();
+  try {
+    String address = theOscMessage.addrPattern();
+    //NOTE: ADD IP FILTER
+    if (address.indexOf(d3Address) != -1) { //From D3
+      d3OSCParse(theOscMessage);
+      d3Input.trigger();
+    } else if (address.indexOf(eosActiveCue) != -1) { //From EOS
+      eosOSCParse(theOscMessage);
+    } else if (address.indexOf(reaperTime) != -1) { //From REAPER
+      reaperParse(theOscMessage);
+      timecodeInput.trigger();
+    }
+  } 
+  catch (Exception e) {
   }
 }

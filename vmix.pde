@@ -74,11 +74,12 @@ void triggerScreenshot() {
   try {
     //NOTE: REPLACE SPACES WITH _
     //NOTE: FIX PATHS
+    //NOTE: ADD SPECIAL SCREENSHOT - NAME SCREENSHOT THEN TAKE PICTURE
     int vMixDelay = 250;
     String function = "SnapshotInput&Input=";
 
     String path = "C:/Users/SAI/Documents/GitHub/Echidna/data/";
-    desktopPath = "C:/Users/SAI/Desktop/Echidna/";
+    //desktopPath = "C:/Users/SAI/Desktop/Echidna/";
 
     GetRequest get = new GetRequest(getPrefix + function + "StageFeed-Clean" + "&Value=" + path + "showFeed.png"); // Screenshot Stage Feed - Web Browser
     get.send();
@@ -90,12 +91,12 @@ void triggerScreenshot() {
 
     String stamp = clockFile + "_[" + lxMidiList1CueNumber + "]";
 
-    get = new GetRequest(getPrefix + function + "StageFeed-Overlay" + "&Value=" + desktopPath + "ShowFeed/" + "feed_" + stamp + ".png"); // Screenshot Stage Feed - Documentation
-    get.send();
-    delay(vMixDelay);
+    //get = new GetRequest(getPrefix + function + "StageFeed-Overlay" + "&Value=" + desktopPath + "ShowFeed/" + "feed_" + stamp + ".png"); // Screenshot Stage Feed - Documentation
+    //get.send();
+    //delay(vMixDelay);
 
-    get = new GetRequest(getPrefix + function + "Multiview-Overlay" + "&Value=" + desktopPath + "Multiview/" + "mv_" + stamp + ".png"); // Screenshot Multiview - Documentation
-    get.send();
+    //get = new GetRequest(getPrefix + function + "Multiview-Overlay" + "&Value=" + desktopPath + "Multiview/" + "mv_" + stamp + ".png"); // Screenshot Multiview - Documentation
+    //get.send();
 
     checkVmix();
 
