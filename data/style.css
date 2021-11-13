@@ -18,7 +18,7 @@ h2 {
 }
 
 .images {
-  
+
 }
 
 img {
@@ -32,7 +32,7 @@ img {
 
 .data {
   padding-left: 10px;
-  width: 100%;
+  width: 99%;
 }
 
 .time {
@@ -64,7 +64,7 @@ img {
   height: 500px;
   padding-left: 10px;
   border-style: solid;
-  width: 55%;
+  width: 60%;
   float: right;
 }
 
