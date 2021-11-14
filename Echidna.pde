@@ -1,4 +1,4 @@
-String debug = "";
+ String debug = "";
 boolean loaded = false;
 PImage logo, name, gui;
 

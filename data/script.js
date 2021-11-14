@@ -2,6 +2,8 @@ var fileName = "";
 
 document.onload = getFileName();
 
+var clock, lxCue;
+
 setInterval(function() {
     var xhr = new XMLHttpRequest();
     var timestamp = new Date().getTime();
@@ -12,6 +14,7 @@ setInterval(function() {
             var response = JSON.parse(xhr.responseText);
 
             document.getElementById("timeText").innerHTML = response.clock;
+            clock = response.clock;
             document.getElementById("timecodeText").innerHTML = response.timeCode;
 
             document.getElementById("D3Now").innerHTML = response.d3CurrentCue;
@@ -23,6 +26,7 @@ setInterval(function() {
                 document.getElementById("feed").src = "showfeed.png?t=" + timestamp;
                 document.getElementById("multiview").src = "multiview.png?t=" + timestamp;
                 document.getElementById("lxNow").innerHTML = response.lxCurrentList1Cue;
+                lxCue = response.lxCurrentList1Cue;
 
                 parseHistory(response.lxHistory, false);
             }
@@ -75,7 +79,7 @@ function parseHistory(response, debug) {
 
     if (debug) {
         document.getElementById("debugText").innerHTML = output;
-        
+
     } else {
         document.getElementById("consoleText").innerHTML = output;
     }
@@ -84,4 +88,31 @@ function parseHistory(response, debug) {
 function getFileName() {
     fileName = location.pathname.split("/".slice(-1));
     fileName = fileName[1];
+}
+
+document.addEventListener('keydown', (event) => {
+    var name = event.key;
+    var code = event.code;
+    var stamp = clock.replace(":", ".") + "_" + "[" + lxCue + "]";
+    if (fileName != "debug.html") {
+        if (event.key == "1") {
+            console.log("SAVE SHOW FEED");
+            download(document.getElementById("feed").src, "feed_" + stamp + ".png");
+        } else if (event.key == "2") {
+            console.log("SAVE MULTIVIEW");
+            download(document.getElementById("multiview").src, "mv_" + stamp + ".png");
+        } else if (event.key == "0") {
+            console.log("SAVE BOTH");
+            download(document.getElementById("feed").src, "feed_" + stamp + ".png");
+            download(document.getElementById("multiview").src, "mv_" + stamp + ".png");
+        }
+    }
+}, false);
+
+
+function download(fileUrl, fileName) {
+    var a = document.createElement("a");
+    a.href = fileUrl;
+    a.setAttribute("download", fileName);
+    a.click();
 }

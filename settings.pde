@@ -37,8 +37,6 @@ void defaultSettings() {
 PrintWriter settingsOut;
 
 void setupSettings() {
-	desktopPath = System.getProperty("user.home") + "/Desktop/Echidna/debug.csv";
-
 	debugTable = new Table();
 	debugTable.addColumn("Time");
 	debugTable.addColumn("RecordTime");
@@ -47,7 +45,7 @@ void setupSettings() {
 	debugTable.addColumn("D3 Time");
 	debugTable.addColumn("LX Cue");
 	debugTable.addColumn("D3 Cue");
-	saveTable(debugTable,desktopPath);
+	saveDebug();
 
 	defaultSettings();
 	String[] settings = loadStrings("data/settings.txt");
@@ -124,4 +122,8 @@ void saveSettings() {
 
 	settingsOut.flush();
 	settingsOut.close();
+}
+
+void saveDebug() {
+	saveTable(debugTable,sketchPath() + "/output/debug.csv");
 }

@@ -165,7 +165,7 @@ void d3Debug() {
     newRow.setString("D3 Time", d3Position);
     newRow.setString("LX Cue", lxMidiCueList + "/" + lxMidiCueNumber);
     newRow.setString("D3 Cue", d3NextTriggerType + ":" + d3NextTrigger);
-    saveTable(debugTable, desktopPath);
+    saveDebug();
 
     // consoleLog(clock + ":" + "D3:" + d3CurrentCue);
   }

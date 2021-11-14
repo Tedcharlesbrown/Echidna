@@ -18,12 +18,16 @@ h2 {
 }
 
 .images {
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 img {
   width: 45%;
   border-style: solid;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .feed {
@@ -38,25 +42,25 @@ img {
 .time {
   padding-left: 10px;
   border-style: solid;
-  width: 37.5%;
+  width: 50%;
 }
 
 .timecode {
   padding-left: 10px;
   border-style: solid;
-  width: 37.5%;
+  width: 50%;
 }
 
 .lighting {
   padding-left: 10px;
   border-style: solid;
-  width: 37.5%;
+  width: 50%;
 }
 
 .video {
   padding-left: 10px;
   border-style: solid;
-  width: 37.5%;
+  width: 50%;
 }
 
 .console {
@@ -64,7 +68,7 @@ img {
   height: 500px;
   padding-left: 10px;
   border-style: solid;
-  width: 60%;
+  width: 45%;
   float: right;
 }
 
@@ -78,7 +82,7 @@ highlight {
 }
 
 @media screen and (max-width: 1000px) {
-  .trigger {
+/*  .trigger {
     float: none;
     margin-left: 10px;
     margin-bottom: 20px;
@@ -99,5 +103,5 @@ highlight {
   }
   button {
     font-size: 15px;
-  }
+  }*/
 }

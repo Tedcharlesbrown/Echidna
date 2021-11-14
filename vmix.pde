@@ -63,40 +63,41 @@ void screenshot() {
     trigger = true;
   } else {
     if (millis() > delay + videoDelay && trigger) {
-      //if (trigger) {
       triggerScreenshot();
       trigger = false;
     }
   }
 }
 
+void keyPressed() {
+  if (key == '/') {
+    triggerScreenshot();
+  }
+}
+
 void triggerScreenshot() {
   try {
-    //NOTE: REPLACE SPACES WITH _
-    //NOTE: FIX PATHS
     //NOTE: ADD SPECIAL SCREENSHOT - NAME SCREENSHOT THEN TAKE PICTURE
     int vMixDelay = 250;
     String function = "SnapshotInput&Input=";
+    String vmixPath = sketchPath().replace('\\','/');
 
-    String path = "C:/Users/SAI/Documents/GitHub/Echidna/data/";
-    //desktopPath = "C:/Users/SAI/Desktop/Echidna/";
-
-    GetRequest get = new GetRequest(getPrefix + function + "StageFeed-Clean" + "&Value=" + path + "showFeed.png"); // Screenshot Stage Feed - Web Browser
+    GetRequest get = new GetRequest(getPrefix + function + "StageFeed-Clean" + "&Value=" + vmixPath + "/data/" + "showFeed.png"); // Screenshot Stage Feed - Web Browser
     get.send();
     delay(vMixDelay);
 
-    get = new GetRequest(getPrefix + function + "Multiview-Clean" + "&Value=" + path + "multiview.png"); // Screenshot Stage Feed - Web Browser
+    get = new GetRequest(getPrefix + function + "Multiview-Clean" + "&Value=" + vmixPath + "/data/" + "multiview.png"); // Screenshot Stage Feed - Web Browser
     get.send();
     delay(vMixDelay);
 
     String stamp = clockFile + "_[" + lxMidiList1CueNumber + "]";
 
-    //get = new GetRequest(getPrefix + function + "StageFeed-Overlay" + "&Value=" + desktopPath + "ShowFeed/" + "feed_" + stamp + ".png"); // Screenshot Stage Feed - Documentation
-    //get.send();
-    //delay(vMixDelay);
+    get = new GetRequest(getPrefix + function + "StageFeed-Overlay" + "&Value=" + vmixPath + "/output/" + "ShowFeed/" + "feed_" + stamp + ".png"); // Screenshot Stage Feed - Documentation
+    get.send();
+    delay(vMixDelay);
 
-    //get = new GetRequest(getPrefix + function + "Multiview-Overlay" + "&Value=" + desktopPath + "Multiview/" + "mv_" + stamp + ".png"); // Screenshot Multiview - Documentation
-    //get.send();
+    get = new GetRequest(getPrefix + function + "Multiview-Overlay" + "&Value=" + vmixPath + "/output/" + "Multiview/" + "mv_" + stamp + ".png"); // Screenshot Multiview - Documentation
+    get.send();
 
     checkVmix();
 
