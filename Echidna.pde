@@ -1,4 +1,4 @@
- String debug = "";
+String debug = "";
 boolean loaded = false;
 PImage logo, name, gui;
 
@@ -10,6 +10,7 @@ void setup() {
 
   setupSettings();
 
+  setupTelnet();
   setupVmix();
   serverSetup();
   setupMIDI();
@@ -21,6 +22,7 @@ void setup() {
 
 void draw() {
   background(0);
+  readClient();
   if (millis() < 10 * 1000) { //10
     image(logo, 0, 0);
   } else {

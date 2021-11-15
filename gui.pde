@@ -21,11 +21,11 @@ void setupGui() {
 	.setFont(createFont("arial", textSize))
 	.setFocus(false)
 	.setAutoClear(false)
-	.setColorValue(0xffffffff)          
-	.setColorActive(0xffff8800)					
-	.setColorCaptionLabel(0xffffffff) 
-	.setColorForeground(0xff9C8DD7)         
-	.setColorBackground(0xff360073)  
+	.setColorValue(0xffffffff)
+	.setColorActive(0xffff8800)
+	.setColorCaptionLabel(0xffffffff)
+	.setColorForeground(0xff9C8DD7)
+	.setColorBackground(0xff360073)
 	;
 
 	cp5.addTextfield("VMIX OUT")
@@ -35,11 +35,11 @@ void setupGui() {
 	.setFont(createFont("arial", textSize))
 	.setFocus(false)
 	.setAutoClear(false)
-	.setColorValue(0xffffffff)          
-	.setColorActive(0xffff8800)					
-	.setColorCaptionLabel(0xffffffff) 
-	.setColorForeground(0xff9C8DD7)         
-	.setColorBackground(0xff360073)  
+	.setColorValue(0xffffffff)
+	.setColorActive(0xffff8800)
+	.setColorCaptionLabel(0xffffffff)
+	.setColorForeground(0xff9C8DD7)
+	.setColorBackground(0xff360073)
 	;
 
 	cp5.addTextfield("DISGUISE IN")
@@ -49,11 +49,11 @@ void setupGui() {
 	.setFont(createFont("arial", textSize))
 	.setFocus(false)
 	.setAutoClear(false)
-	.setColorValue(0xffffffff)          
-	.setColorActive(0xffff8800)					
-	.setColorCaptionLabel(0xffffffff) 
-	.setColorForeground(0xff9C8DD7)         
-	.setColorBackground(0xff360073)  
+	.setColorValue(0xffffffff)
+	.setColorActive(0xffff8800)
+	.setColorCaptionLabel(0xffffffff)
+	.setColorForeground(0xff9C8DD7)
+	.setColorBackground(0xff360073)
 	;
 
 	cp5.addTextfield("REAPER IN")
@@ -63,11 +63,11 @@ void setupGui() {
 	.setFont(createFont("arial", textSize))
 	.setFocus(false)
 	.setAutoClear(false)
-	.setColorValue(0xffffffff)          
-	.setColorActive(0xffff8800)					
-	.setColorCaptionLabel(0xffffffff) 
-	.setColorForeground(0xff9C8DD7)         
-	.setColorBackground(0xff360073)  
+	.setColorValue(0xffffffff)
+	.setColorActive(0xffff8800)
+	.setColorCaptionLabel(0xffffffff)
+	.setColorForeground(0xff9C8DD7)
+	.setColorBackground(0xff360073)
 	;
 
 	cp5.addButton("RECORD")
@@ -76,11 +76,11 @@ void setupGui() {
 	.setFont(createFont("arial", textSize))
 	.setSize(int(inputWidth * 1.5), int(inputHeight * 1.5))
 	.setSwitch(true)
-	.setColorValue(0xffffffff)          
-	.setColorActive(0xffff8800)					
-	.setColorCaptionLabel(0xffffffff) 
-	.setColorForeground(0xff9C8DD7)         
-	.setColorBackground(0xff360073)  
+	.setColorValue(0xffffffff)
+	.setColorActive(0xffff8800)
+	.setColorCaptionLabel(0xffffffff)
+	.setColorForeground(0xff9C8DD7)
+	.setColorBackground(0xff360073)
 	;
 
 	midiInputList = Arrays.asList(MidiBus.availableInputs());
@@ -95,11 +95,11 @@ void setupGui() {
 	.addItems(midiInputList)
 	// .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
 	.setValue(int(MIDI_INPUT))
-	.setColorValue(0xffffffff)          
-	.setColorActive(0xff9C8DD7)					
-	.setColorCaptionLabel(0xffffffff) 
-	.setColorForeground(0xff9C8DD7)     
-	.setColorBackground(0xff360073)  
+	.setColorValue(0xffffffff)
+	.setColorActive(0xff9C8DD7)
+	.setColorCaptionLabel(0xffffffff)
+	.setColorForeground(0xff9C8DD7)
+	.setColorBackground(0xff360073)
 	;
 
 	cp5.hide();
@@ -142,6 +142,11 @@ void consoleLog(String log) {
 	console = log;
 	console += '\n';
 	console += temp;
+
+	if (!log.contains("TELNET")) {
+		telnetServer.write("ECHIDNA: " + log);
+		telnetServer.write(carriageReturn);
+	}
 
 	println(log);
 }
