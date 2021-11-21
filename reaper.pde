@@ -1,7 +1,12 @@
 String reaperTime = "/frames/str";
 
-String timeCode = "";
+String timeCode = "NONE";
+String lastTimeCode = "";
 
 void reaperParse(OscMessage theOscMessage) {
-	timeCode = theOscMessage.get(0).stringValue();
+  try {
+    timeCode = theOscMessage.get(0).stringValue();
+  } 
+  catch (Exception e) {
+  }
 }

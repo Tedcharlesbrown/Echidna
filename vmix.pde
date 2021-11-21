@@ -25,7 +25,9 @@ int checkVmixTimer = 0;
 void updateVmix() {
   if (vMixAvailable) {
     screenshot();
-
+    //Replace all non characters
+    
+    try {
     GetRequest get = new GetRequest(getPrefix + "SetText&Input=LXCue&SelectedName=Message&Value=" + lxMidiList1CueNumber); //LX CUE
     get.send();
 
@@ -45,6 +47,9 @@ void updateVmix() {
     get.send();
 
     checkVmix();
+    } catch (Exception e) {
+      
+    }
   } else if ((millis() / 100) - checkVmixTimer > 100) {
     checkVmixTimer = millis() / 100;
     checkVmix();
